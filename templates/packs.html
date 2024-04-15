@@ -1,0 +1,36 @@
+{%extends 'base.html'%}
+{%block title%}
+Packs
+{%endblock%}
+
+{%block content%}
+
+<h1>Packs</h1>
+<ul>
+    {%for pack in packs%}
+    <div class="col">
+
+        <div class="card" style="width: 18rem;">
+            
+            <div class="card-body">
+                <h5 class="card-title">{{pack.name}}</h5>
+                <p class="card-text">{{pack.description}}</p>
+                <a href="/packs/{{pack.id}}" class="btn btn-primary">View Pack</a>
+                <form action="/packs/{{pack.id}}/delete" method="POST">
+                    <button class="btn btn-danger">Delete Pack </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    {%endfor%}
+</ul>
+
+<div>
+    <form action="/packs/new">
+        <button type="submit">Add a Pack</button>
+    </form>
+</div>
+
+{%endblock%}
+

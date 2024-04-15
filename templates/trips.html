@@ -1,0 +1,25 @@
+{%extends 'base.html'%}
+{%block title%}
+Trips
+{%endblock%}
+
+{%block content%}
+
+<h1>Registered Trips</h1>
+<ul>
+
+    {%for trip in trips%}
+    <li>
+        <a href="/trips/{{trip.id}}">{{trip.name}}</a>
+    </li>
+    
+    {%endfor%}
+</ul>
+
+<div>
+    <form action="/trips/new">
+        <button type="submit">Add a Trip</button>
+    </form>
+</div>
+
+{%endblock%}

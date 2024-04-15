@@ -1,0 +1,32 @@
+{%extends 'base.html'%}
+
+{%block title%}
+{{pack.name}}
+{%endblock%}
+{%block content %}
+
+<h1>{{pack.name}}</h1>
+
+<div>
+    <p>
+        {{pack.notes}}
+
+    </p>
+</div>
+
+<div>
+    <ul>
+        {%for item in items%}
+        <li>{{item.name}}</li>
+
+        {%endfor%}
+    </ul>
+</div>
+
+<a href="/packs">All Packs</a>
+
+<form action="/packs/{{pack.id}}/delete" method="POST">
+    <button type="submit">Remove Pack</button>
+</form>
+
+{%endblock%}

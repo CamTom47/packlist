@@ -1,8 +1,13 @@
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 
-bcrypt = Bcrypt()
 db = SQLAlchemy()
+bcrypt = Bcrypt()
+
+def connect_db(app):
+    db.app = app
+    app.app_context().push()
+    db.init_app(app)
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -23,12 +28,17 @@ class User(db.Model):
         nullable = False,
         unique = True
     )
+
+    trips = db.relationship('Trip',
+                                secondary='users_trips',
+                                backref='users',
+                                cascade='all, delete')
     
     @classmethod
     def register (cls, username, password):
         """Register user w/ hashed password & returns user"""
         hashed = bcrypt.generate_password_hash(password)
-        hashed_utf8 = hashed.decord('utf8')
+        hashed_utf8 = hashed.decode('utf8')
 
         return cls(username=username, password=hashed_utf8)
     
@@ -42,139 +52,173 @@ class User(db.Model):
         else:
             return False
         
-    class UserTrip(db.Model):
-        __tablename__ = 'users_trips'
+class UserTrip(db.Model):
+    __tablename__ = 'users_trips'
 
-        id = db.Column(
-            db.Integer,
-            primary_key = True,
-            autoincrement = True,
-        )
+    id = db.Column(
+        db.Integer,
+        primary_key = True,
+        autoincrement = True,
+    )
 
-        user_id = db.Column(
-            db.Integer,
-            db.foreignKey('users.id'),
-            nullable = False
-        )
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+        nullable = False
+    )
 
-        trip_id = db.Column(
-            db.Integer,
-            db.foreignKey('trips.id'),
-            nullable = False
-        )
+    trip_id = db.Column(
+        db.Integer,
+        db.ForeignKey('trips.id'),
+        nullable = False
+    )
 
 
-    class Trip(db.Model):
-        __tablename__ = 'trips'
+class Trip(db.Model):
+    __tablename__ = 'trips'
 
-        id = db.Column(
-            db.Integer,
-            primary_key = True,
-            autoincrement = True
-        )
+    id = db.Column(
+        db.Integer,
+        primary_key = True,
+        autoincrement = True
+    )
+    
+    name = db.Column(
+        db.Text,
+        nullable = False
+    )
 
-        location = db.Column(
-            db.String,
-            nullable = False
-        )
+    location = db.Column(
+        db.Text,
+        nullable = False
+    )
 
-        trip_duration = db.Column(
-            db.Integer
-        )
+    start_date = db.Column(
+        db.Date,
+        nullable = False
+    )
+    end_date = db.Column(
+        db.Date,
+        nullable = False
+    )
 
-        mileage = db.Column(
-            db.Integer
-        )
+    mileage = db.Column(
+        db.Integer
+    )
 
-        notes = db.Column(
-            db.String
-        )
+    notes = db.Column(
+        db.Text
+    )
 
-    class TripChecklist(db.Model):
-        __table__name = 'trips_checklists'
+    packs = db.relationship('Pack',
+                            secondary='trips_packs',
+                            backref='trips',
+                            cascade='all, delete')
 
-        id = db.Column(
-            db.Integer,
-            primary_key = True,
-            autoincrement = True
-        )
 
-        trip_id = db.Column(
-            db.Integer,
-            db.foreignKey('trips.id'),
-            nullable = False
-        )
+class TripPack(db.Model):
+    __tablename__ = 'trips_packs'
 
-        checklist_id = db.Column(
-            db.Integer,
-            db.foreignKey('checklist.id'),
-            nullable = False
-        )
+    id = db.Column(
+        db.Integer,
+        primary_key = True,
+        autoincrement = True
+    )
 
-    class Checklist(db.Model):
-        __tablename__ = 'checklists'
+    trip_id = db.Column(
+        db.Integer,
+        db.ForeignKey('trips.id'),
+        nullable = False
+    )
 
-        id = db.Column(
-            db.Integer,
-            primary_key = True,
-            autoincrement = True
-        )
+    pack_id = db.Column(
+        db.Integer,
+        db.ForeignKey('packs.id'),
+        nullable = False
+    )
 
-        name = db.Column(
-            db.String,
-            nullable = False
-        )
+class Pack(db.Model):
+    __tablename__ = 'packs'
 
-        notes = db.Column(
-            db.String
-        )
+    id = db.Column(
+        db.Integer,
+        primary_key = True,
+        autoincrement = True
+    )
 
-    class ChecklistItems(db.Model):
-        __tablename__ = 'checklists_items'
+    name = db.Column(
+        db.Text,
+        nullable = False
+    )
 
-        id = db.Column(
-            db.Integer,
-            primary_key = True,
-            autoincrement = True
-        )
+    notes = db.Column(
+        db.Text
+    )
 
-        checklist_id = db.Column(
-            db.Integer,
-            db.foreignKey('checklists.id'),
-            nullable = False
-        )
+    items = db.relationship('Item',
+                            secondary='packs_items',
+                            backref='packs',
+                            cascade='all, delete')
 
-        items_id = db.Column(
-            db.Integer,
-            db.foreignKey('items.id'),
-            nullable = False
-        )
 
-    class Item(db.Model):
-        __tablename__ = 'items'
+class PackItem(db.Model):
+    __tablename__ = 'packs_items'
 
-        id = db.Column(
-            db.Integer,
-            primary_key = True,
-            autoincrement = True
-        )
+    id = db.Column(
+        db.Integer,
+        primary_key = True,
+        autoincrement = True
+    )
 
-        name = db.Column(
-            db.String,
-            nullable = False,
-            unique = True
-        )
+    pack_id = db.Column(
+        db.Integer,
+        db.ForeignKey('packs.id'),
+        nullable = False
+    )
 
-        category = db.Column(
-            db.String,
-            nullable = False,
-        )
+    items_id = db.Column(
+        db.Integer,
+        db.ForeignKey('items.id'),
+        nullable = False
+    )
 
-        essential = db.Column(
-            db.Boolean,
-            nullable = False
-        )
+class Item(db.Model):
+    __tablename__ = 'items'
 
-        rain_precautionary = db.Column(
-            db.Boolean
-        )
+    id = db.Column(
+        db.Integer,
+        primary_key = True,
+        autoincrement = True
+    )
+
+    name = db.Column(
+        db.Text,
+        nullable = False,
+        unique = True
+    )
+
+    category = db.Column(
+        db.Text,
+        nullable = False,
+    )
+
+    essential = db.Column(
+        db.Boolean,
+        nullable = False
+    )
+
+    rain_precautionary = db.Column(
+        db.Boolean
+    )
+    cold_precautionary = db.Column(
+        db.Boolean
+    )
+    heat_precautionary = db.Column(
+        db.Boolean
+    )
+    emergency_precautionary = db.Column(
+        db.Boolean
+    )
+    removable = db.Column(
+        db.Boolean
+    )
