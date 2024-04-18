@@ -1,0 +1,47 @@
+{% extends 'base.html'%}
+{%block title%}
+Edit Pack
+{%endblock%}
+{%block content%}
+<h1>Edit Pack</h1>
+
+<div id="pack-form">
+    <form action="/packs/{{pack.id}}/edit" method="POST">
+        <div id="pack-section">
+
+
+
+            {{form.hidden_tag()}}
+
+            {%for field in form if field.widget.input_type != 'hidden'%}
+
+            <p>
+                {{field.label}}
+                {{field}}
+            </p>
+
+            {%endfor%}
+
+            <h3>Pack Contents</h3>
+            {%for item in items%}
+            <p class="item-name">{{item.name}}</p>
+
+            {%endfor%}
+
+
+
+
+            <div>
+                <button class="visually-hidden" id="update-pack-button">Update Pack</button>
+            </div>
+        </div>
+    </form>
+
+    <div>
+        <button id="item-section-button">Add/Remove Items</button>
+    </div>
+</div>
+
+
+<script src='../../static/functionalities/edit-pack.js'></script>
+{%endblock%}

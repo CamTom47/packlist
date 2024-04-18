@@ -7,32 +7,32 @@ Create Pack
 
 <div id="pack-form">
     <form action="/packs/new" method="POST">
-    <div id="pack-section">
+        <div id="pack-section">
 
-        
+
             {{form.hidden_tag()}}
-            
+
             {%for field in form if field.widget.input_type != 'hidden'%}
-            
+
             <p>
                 {{field.label}}
                 {{field}}
             </p>
-            
+
             {%endfor%}
-            
-            
-            
+
+
+
             <div>
                 <button class="visually-hidden" type="submit" id="create-pack-button">Create New Pack</button>
             </div>
         </div>
-        </form>
-        
-        <div>
-            <button id="item-section-button">Add Some Items</button>
-        </div>
+    </form>
+
+    <div>
+        <button id="item-section-button">Add Some Items</button>
+    </div>
 </div>
 
-<script src='../static/functionalities/pack.js'></script>
+<script src='../../static/functionalities/create-pack.js'></script>
 {%endblock%}

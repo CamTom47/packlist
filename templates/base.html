@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{%block title%}{%endblock%}</title>
-    <link rel="stylesheet"
-        href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
-  <script src="https://unpkg.com/bootstrap"></script>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
+    <script src="https://unpkg.com/bootstrap"></script>
 
-  <link rel="stylesheet"
-        href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-  <link rel="stylesheet" href="/static/stylesheets/style.css">
-  <link rel="shortcut icon" href="/static/favicon.ico">
-  <script src="https://unpkg.com/jquery"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <link rel="stylesheet" href="/static/stylesheets/style.css">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <script src="https://unpkg.com/jquery"></script>
 
 </head>
+
 <body>
     {% if not g.user %}
-        <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
-            <a href="/signup">Sign Up</a>
-            <a href="/login">Log In</a>
-        </nav>
+    <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+        <a href="/signup">Sign Up</a>
+        <a href="/login">Log In</a>
+    </nav>
 
     {%endif%}
 
@@ -28,27 +28,27 @@
 
     <div>
         <nav class="navbar bg-dark border-bottom border-body d-flex" data-bs-theme="dark">
-                    <div>
-                        <div class="d-inline px-5">
+            <div>
+                <div class="d-inline px-5">
 
-                            <span class="navbar-text">
-                                <a class='text-decoration-none' href="/trips">Trips</a>
-                            </span>
-                        </div>
-                        
-                        <div class="d-inline">
+                    <span class="navbar-text">
+                        <a class='text-decoration-none' href="/trips">Trips</a>
+                    </span>
+                </div>
 
-                            <span class="navbar-text">
-                                <a class='text-decoration-none' href="/packs">Packs</a>
-                            </span>
-                        </div>
-                    </div>
-                        
-                    <div class="px-5">
-                        <span class="navbar-text d-inline-flex">
-                            <a class='text-decoration-none' href="/logout">Log Out</a>
-                        </span>
-                    </div>
+                <div class="d-inline">
+
+                    <span class="navbar-text">
+                        <a class='text-decoration-none' href="/packs">Packs</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="px-5">
+                <span class="navbar-text d-inline-flex">
+                    <a class='text-decoration-none' href="/logout">Log Out</a>
+                </span>
+            </div>
         </nav>
     </div>
 

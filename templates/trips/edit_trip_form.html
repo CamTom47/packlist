@@ -1,0 +1,22 @@
+{% extends 'base.html'%}
+{%block title%}
+Edit Trip Information
+{%endblock%}
+{%block content%}
+<h1>Edit Trip Form</h1>
+<form action="/trips/{{trip.id}}/edit" method="POST">
+    {{form.hidden_tag()}}
+
+    {%for field in form if field.widget.input_type != 'hidden'%}
+
+    <p>
+        {{field.label}}
+        {{field}}
+    </p>
+
+    {%endfor%}
+    <div>
+        <button type="submit">Update Trip</button>
+    </div>
+</form>
+{%endblock%}

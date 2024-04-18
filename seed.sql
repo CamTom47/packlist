@@ -8,7 +8,7 @@ VALUES
 ('Tent', 'Gear', True, False, False, False, False, False),
 ('Tarp', 'Gear', True, False, False, False, False, False),
 ('Rain Fly', 'Gear', True, True, False, False, False, False),
-('Sleeping Bags', 'Sleeping', True, False, False, False, False, False),
+('Sleeping Bag', 'Sleeping', True, False, False, False, False, False),
 ('Sleeping Pad', 'Sleeping', True, False, False, False, False, False),
 ('Trekking Poles', 'Gear', True, False, False, False, False, False),
 ('Bear Canister', 'Safety', True, False, False, False, False, False),

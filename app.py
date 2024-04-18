@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, redirect, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Item, Pack, User, UserTrip, Trip, TripPack, PackItem
-from forms import AddUserForm, LoginForm, AddTripForm, AddPackForm
+from forms import AddUserForm, LoginForm, AddTripForm, AddPackForm, EditPackForm, EditTripForm
 
 app = Flask(__name__)
 
@@ -85,6 +85,7 @@ def signup():
 
 @app.route('/login', methods=['GET','POST'])
 def login():
+    """Render login form on GET request and Authenticate a user on POST request"""
     form = LoginForm()
 
     if form.validate_on_submit():
@@ -106,13 +107,13 @@ def logout():
     return redirect('/')
 
 
-# Routing for trips #
+#--------------------- Routing for trips ---------------------#
 @app.route('/trips')
 def show_trips():
     """Show all trips"""
     trips = Trip.query.all()
 
-    return render_template('trips.html', trips = trips)
+    return render_template('/trips/trips.html', trips = trips)
 
 
 @app.route('/trips/new', methods=['GET','POST'])
@@ -144,7 +145,7 @@ def create_trip():
 
         return redirect('/trips')
 
-    return render_template('create_trip_form.html', form=form)
+    return render_template('trips/create_trip_form.html', form=form)
 
 @app.route('/trips/<int:id>')
 def show_trip_details(id):
@@ -155,7 +156,29 @@ def show_trip_details(id):
 
     packs = Pack.query.all()
 
-    return render_template('trip_details.html', trip = trip, trip_packs=trip_packs, packs=packs)
+    return render_template('trips/trip_details.html', trip = trip, trip_packs=trip_packs, packs=packs)
+
+@app.route('/trips/<int:id>/edit', methods=['GET','POST'])
+def edit_trip(id):
+    """Handle edit trip form"""
+
+    trip = Trip.query.get_or_404(id)
+
+    form = EditTripForm()
+
+    if form.validate_on_submit():
+        trip.name = form.name.data
+        trip.location = form.location.data
+        trip.start_date = form.start_date.data
+        trip.end_date = form.end_date.data
+        trip.mileage = form.mileage.data
+        trip.notes = form.notes.data
+
+        db.session.commit()
+
+        return redirect(f'/trips/{id}')
+    
+    return render_template('trips/edit_trip_form.html', form=form, trip=trip)
 
 @app.route('/trips/<int:id>/delete', methods=['POST'])
 def delete_trip(id):
@@ -167,7 +190,7 @@ def delete_trip(id):
     return redirect('/trips')
 
 
-# Routing for packs #
+# --------------------- Routing for packs  ---------------------#
 
 @app.route('/packs')
 def show_packs():
@@ -175,16 +198,16 @@ def show_packs():
 
     packs = Pack.query.all()
     
-    return render_template('packs.html', packs = packs)
+    return render_template('packs/packs.html', packs = packs)
 
 @app.route('/packs/<int:id>')
 def show_pack_details(id):
     """Shows the details of a user's pack"""
     pack = Pack.query.get_or_404(id)
 
-    items = Item.query.join(PackItem, Item.id == PackItem.items_id).filter(PackItem.pack_id == pack.id)
+    items = Item.query.join(PackItem, Item.id == PackItem.item_id).filter(PackItem.pack_id == pack.id)
 
-    return render_template('pack_details.html', pack=pack, items=items)
+    return render_template('packs/pack_details.html', pack=pack, items=items)
 
 
 @app.route('/packs/new', methods =['GET','POST'])
@@ -205,15 +228,56 @@ def create_new_pack():
         for item in items:
             item = Item.query.filter(Item.name == item).first()
 
-            checklist_item = PackItem(pack_id = pack.id, items_id=item.id)
+            pack_item = PackItem(pack_id = pack.id, item_id=item.id)
 
-            db.session.add(checklist_item)
+            db.session.add(pack_item)
             db.session.commit()
 
 
         return redirect(f'/packs/{pack.id}')
     
-    return render_template('create_pack_form.html', form=form)
+    return render_template('/packs/create_pack_form.html', form=form)
+
+@app.route('/packs/<int:id>/edit', methods=['GET','POST'])
+def edit_pack(id):
+    """Edit the contents of a pack"""
+    pack = Pack.query.get_or_404(id)
+    existing_items = pack.items
+
+    form = EditPackForm()
+    
+    if form.validate_on_submit():
+        pack.name = form.name.data
+        pack.notes = form.notes.data
+
+        db.session.commit()
+
+        new_items = request.form.getlist('pack-items')
+
+        if existing_items:
+            for existing_item in existing_items:
+                """If an item was removed from the pack"""
+                if existing_item not in new_items:
+                    print(existing_item.id)
+
+                    pack_item = PackItem.query.filter(PackItem.item_id == existing_item.id and PackItem.pack_id == pack.id).first()
+                    db.session.delete(pack_item)
+                    db.session.commit()
+
+        if new_items:
+            for new_item in new_items:
+                """Add items that were not originally in the pack"""
+                item = Item.query.filter(Item.name == new_item).first()
+
+                pack_item = PackItem(pack_id = pack.id, item_id=item.id)
+
+                db.session.add(pack_item)
+                db.session.commit()
+
+        return redirect(f'/packs/{pack.id}')
+    
+    
+    return render_template('packs/edit_pack_form.html', form=form, pack = pack, items = existing_items)
     
 @app.route('/packs/<int:id>/delete', methods=['POST'])
 def delete_pack(id):
@@ -224,13 +288,6 @@ def delete_pack(id):
     db.session.commit()
 
     return redirect('/packs')
-
-@app.route('/items')
-def get_items():
-    items = Item.query.all()
-    serialized = [serialize_item(item) for item in items]
-
-    return jsonify(items = serialized)
 
 @app.route('/trips/<int:trip_id>/<int:pack_id>', methods=['POST'])
 def add_pack_to_trip(trip_id,pack_id):
@@ -243,4 +300,10 @@ def add_pack_to_trip(trip_id,pack_id):
     return redirect(f'/trips/{trip_id}')
 
 
+# -------------------- Routing for Items ------------------------#
+@app.route('/items')
+def get_items():
+    items = Item.query.all()
+    serialized = [serialize_item(item) for item in items]
 
+    return jsonify(items = serialized)

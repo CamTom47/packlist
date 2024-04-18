@@ -32,7 +32,7 @@ class User(db.Model):
     trips = db.relationship('Trip',
                                 secondary='users_trips',
                                 backref='users',
-                                cascade='all, delete')
+                                cascade='save-update')
     
     @classmethod
     def register (cls, username, password):
@@ -113,7 +113,7 @@ class Trip(db.Model):
     packs = db.relationship('Pack',
                             secondary='trips_packs',
                             backref='trips',
-                            cascade='all, delete')
+                            cascade='save-update')
 
 
 class TripPack(db.Model):
@@ -158,7 +158,7 @@ class Pack(db.Model):
     items = db.relationship('Item',
                             secondary='packs_items',
                             backref='packs',
-                            cascade='all, delete')
+                            cascade='save-update')
 
 
 class PackItem(db.Model):
@@ -176,7 +176,7 @@ class PackItem(db.Model):
         nullable = False
     )
 
-    items_id = db.Column(
+    item_id = db.Column(
         db.Integer,
         db.ForeignKey('items.id'),
         nullable = False
