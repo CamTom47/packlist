@@ -5,21 +5,106 @@ Trips
 
 {%block content%}
 
-<h1>Registered Trips</h1>
-<ul>
+<h1>Trips</h1>
+{% for msg in get_flashed_messages() %}
+<p>{{msg}}</p>
+{% endfor %}
 
-    {%for trip in trips%}
-    <li>
-        <a href="/trips/{{trip.id}}">{{trip.name}}</a>
-    </li>
 
-    {%endfor%}
-</ul>
+<div class="d-flex justify-content-between w-50 px-5 ">
+  <div class="d-flex card w-100">
+    <div>
+      <a href="/trips/new" type="submit" class="btn btn-secondary w-100">Add a New Trip</a>
 
-<div>
-    <form action="/trips/new">
-        <button type="submit">Add a Trip</button>
-    </form>
+      {% if not trips %}
+      <div class="d-flex justify-content-center">
+        <p class="text-danger mx-auto p-2">It looks like you do not have any planned trip!</p>
+      </div>
+
+      {% endif %}
+
+      {% if trips %}
+
+
+
+
+      <div class="d-inline w-50">
+        <div class="d-flex flex-column mb-3 text-bg-dark">
+          
+          <h1>Upcoming</h1>
+          {% for trip in trips %}
+          {% if trip.status == 1 %}
+          <div class="card m-2">
+            <div class="card-body">
+              <div class="d-flex w-100 justify-content-between">
+                <div class="justify-content-start">
+                  <div >
+                    <h5 class="card-title">{{trip.name}}</h5>
+                    
+                  </div>
+                    
+                </div>
+                <div class="justify-content-end">
+                  <form action="/trip/{{trip.id}}/status" method="POST" class="d-inline">
+                    <button type="submit" class="fas fa-check fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                  </form>
+                  <form action="/trips/{{trip.id}}/edit" class="d-inline">
+                    <button type="submit" class="fas fa-pen fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                  </form>
+                  <form action="/trips/{{trip.id}}/delete" method="POST" class="d-inline">
+                    <button type="submit" class="fas fa-trash fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                  </form>
+                </div>
+              </div>
+              <hr>
+              <span class="d-inline fw-bold">Notes:</span>
+              <p class="card-text d-inline">{{trip.notes}}</p>
+              <a href="/trips/{{trip.id}}" class="btn btn-primary d-block">Trip Details</a>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+          
+          <h1>Completed</h1>
+          {% for trip in trips %}
+          {% if trip.status == 2 %}
+          <div class="card m-2">
+            <div class="card-body">
+              <div class="d-flex w-100 justify-content-between">
+                <div class="justify-content-start">
+                  <h5 class="card-title">{{trip.name}}</h5>
+
+                </div>
+                <div class="justify-content-end">
+                  <form action="/trip/{{trip.id}}/status" method="POST" class="d-inline">
+                    <button type="submit" class="fas fa-backward fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                  </form>
+                  <form action="/trips/{{trip.id}}/edit" class="d-inline">
+                    <button type="submit" class="fas fa-pen fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                  </form>
+                  <form action="/trips/{{trip.id}}/delete" method="POST" class="d-inline">
+                    <button type="submit" class="fas fa-trash fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                  </form>
+                </div>
+              </div>
+              <hr>
+              <span class="d-inline fw-bold">Notes:</span>
+              <p class="card-text d-inline">{{trip.notes}}</p>
+              <a href="/trips/{{trip.id}}" class="btn btn-primary d-block">Trip Details</a>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        
+        </div>
+
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
 </div>
+
+
 
 {%endblock%}

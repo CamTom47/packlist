@@ -1,0 +1,29 @@
+{% extends 'base.html'%}
+
+{%block title%}
+Sign Up Form
+{%endblock%}
+{%block content%}
+<h1>Sign Up Form</h1>
+
+<div class="mx-5">
+
+    <form action="/signup" method="POST" class="row g-4 p-5">
+    {{form.hidden_tag()}}
+    
+    {% for field in form if field.widget.input_type != 'hidden' %}
+        
+        <div class="col-md-6">
+            <div class="col">
+                {{field.label(class="form-label")}}
+                    {{field(class="form-control")}}
+            </div>
+        </div>
+        
+        {%endfor%}
+        <div class="col-12">
+            <button class="btn btn-secondary" type="submit">Sign Up</button>
+        </div>
+    </form>
+</div>
+{%endblock%}

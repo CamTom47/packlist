@@ -17,6 +17,16 @@ class User(db.Model):
         primary_key= True,
         autoincrement = True)
     
+    first_name = db.Column(
+        db.Text,
+        nullable = False,
+    )
+  
+    last_name = db.Column(
+        db.Text,
+        nullable = False,
+    )
+        
     username = db.Column(
         db.Text,
         nullable = False,
@@ -35,12 +45,20 @@ class User(db.Model):
                                 cascade='save-update')
     
     @classmethod
-    def register (cls, username, password):
+    def register (cls, first_name, last_name, username, password):
         """Register user w/ hashed password & returns user"""
         hashed = bcrypt.generate_password_hash(password)
         hashed_utf8 = hashed.decode('utf8')
 
-        return cls(username=username, password=hashed_utf8)
+        return cls(first_name = first_name, last_name = last_name, username=username, password=hashed_utf8 )
+    
+    @classmethod
+    def auth_update (cls, first_name, last_name, username, password):
+        """Register user w/ hashed password & returns user"""
+        hashed = bcrypt.generate_password_hash(password)
+        hashed_utf8 = hashed.decode('utf8')
+
+        return cls(first_name = first_name, last_name = last_name, username=username, password=hashed_utf8 )
     
     @classmethod
     def authenticate(cls, username, password):
@@ -109,11 +127,43 @@ class Trip(db.Model):
     notes = db.Column(
         db.Text
     )
+    
+    lat = db.Column(
+        db.Float
+    )
+    
+    lng = db.Column(
+        db.Float
+    )
+    
+    status = db.Column(
+        db.Integer,
+        db.ForeignKey('trip_status.id'),
+        nullable=False
+    )
 
     packs = db.relationship('Pack',
                             secondary='trips_packs',
                             backref='trips',
                             cascade='save-update')
+    
+    trip_status = db.relationship('TripStatus',
+                                  backref='trips',
+                                  cascade='save-update')
+    
+class TripStatus(db.Model):
+    __tablename__ = 'trip_status'
+    
+    id = db.Column(
+        db.Integer,
+        primary_key = True,
+        autoincrement = True
+    )
+    
+    status = db.Column(
+        db.Text,
+        nullable = False
+    )
 
 
 class TripPack(db.Model):
@@ -144,6 +194,12 @@ class Pack(db.Model):
         db.Integer,
         primary_key = True,
         autoincrement = True
+    )
+    
+    owner = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+        nullable = False
     )
 
     name = db.Column(
@@ -190,7 +246,7 @@ class Item(db.Model):
         primary_key = True,
         autoincrement = True
     )
-
+    
     name = db.Column(
         db.Text,
         nullable = False,
@@ -219,6 +275,12 @@ class Item(db.Model):
     emergency_precautionary = db.Column(
         db.Boolean
     )
+    
+    created_by = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id')
+    )
+    
     removable = db.Column(
         db.Boolean
     )

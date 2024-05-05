@@ -3,36 +3,40 @@
 Create Pack
 {%endblock%}
 {%block content%}
-<h1>Create Pack Form</h1>
 
-<div id="pack-form">
-    <form action="/packs/new" method="POST">
-        <div id="pack-section">
+<div class="mx-5 ">
+    <h1 class="mx-auto mb-5">Create Pack Form</h1>
 
+    <div class="text-bg-secondary">
 
-            {{form.hidden_tag()}}
-
-            {%for field in form if field.widget.input_type != 'hidden'%}
-
-            <p>
-                {{field.label}}
-                {{field}}
-            </p>
-
-            {%endfor%}
-
-
-
-            <div>
-                <button class="visually-hidden" type="submit" id="create-pack-button">Create New Pack</button>
-            </div>
+        <form action="/packs/new" method="POST" class="d-flex w-100">
+            <div id="pack-form" class="d-flex w-25 card p-5 me-5 h-50 ">
+                <h3 class="">Pack Information</h3>
+                <div id="pack-section" class="d-inline-flex w-100">
+                    <div class="mx-5 ">
+                        <div class="col my-2">
+                            
+                            {{form.hidden_tag()}}
+                            {%for field in form if field.widget.input_type != 'hidden'%}
+                            {{field.label(class="form-label")}}
+                            {{field(class="form-control")}}
+                            
+                            {%endfor%}
+                        </div>
+                        <div>
+                            <button class="btn btn-secondary w-100 mt-3" id="item-section-button">Add Some Items</button>
+                        </div>
+                        <div>
+                            <button class="visually-hidden btn btn-secondary w-100 mt-3" type="submit" id="create-pack-button">Create New
+                                Pack</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
         </div>
     </form>
-
-    <div>
-        <button id="item-section-button">Add Some Items</button>
-    </div>
 </div>
 
-<script src='../../static/functionalities/create-pack.js'></script>
+<script src='../../static/functionalities/pack/create-pack.js'></script>
 {%endblock%}

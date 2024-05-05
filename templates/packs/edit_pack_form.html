@@ -3,45 +3,71 @@
 Edit Pack
 {%endblock%}
 {%block content%}
-<h1>Edit Pack</h1>
-
-<div id="pack-form">
-    <form action="/packs/{{pack.id}}/edit" method="POST">
-        <div id="pack-section">
 
 
+<div class="mx-5">
 
-            {{form.hidden_tag()}}
+    <h1 class="mx-5">Edit Pack</h1>
 
-            {%for field in form if field.widget.input_type != 'hidden'%}
+    <form class="d-flex w-100 " action="/packs/{{pack.id}}/edit" method="POST">
+        <div id="pack-form" class="d-flex w-50">
+            <div id="pack-section">
+                <div class="mx-5">
+                    <div class="col">
+                        {{form.hidden_tag()}}
+                        {%for field in form if field.widget.input_type != 'hidden'%}
+                        {{field.label(class="form-label")}}
+                        {{field(class="form-control")}}
 
-            <p>
-                {{field.label}}
-                {{field}}
-            </p>
-
-            {%endfor%}
-
-            <h3>Pack Contents</h3>
-            {%for item in items%}
-            <p class="item-name">{{item.name}}</p>
-
-            {%endfor%}
-
-
-
-
-            <div>
-                <button class="visually-hidden" id="update-pack-button">Update Pack</button>
+                        {%endfor%}
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary mt-4 w-100" id="update-pack-button">Update Pack</button>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div class="d-inline w-50">
+            <div class="d-row">
+                <h3>Pack Contents</h3>
+
+
+                <div class="card d-flex w-100 me-5">
+
+                    <div>
+                        <button id="item-section-button" class="btn btn-secondary w-100">Add/Remove Items</button>
+                    </div>
+                    <div>
+                        <div id="category-section" class="d-inline w-100">
+                            {% for category in categories%}
+                            <h3 class="ms-3">
+                                {{category}}
+                            </h3>
+                            <hr>
+                            <ul class="" id="{{category}}">
+                                <div class="row">
+                                    {%for item in items%}
+                                    {% if item.category == category %}
+                                    <div class="col-4">
+                                        <div class="d-flex">
+                                            <div class="d-flex ps-2 card card-body m-3 p-0">
+                                                <li class="items list-unstyled existing-item">{{item.name}}</li>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            </ul>
+
+                        </div>
+
+
+                    </div>
     </form>
-
-    <div>
-        <button id="item-section-button">Add/Remove Items</button>
-    </div>
 </div>
-
-
-<script src='../../static/functionalities/edit-pack.js'></script>
+<script src='../../static/functionalities/pack/edit-pack.js'></script>
 {%endblock%}

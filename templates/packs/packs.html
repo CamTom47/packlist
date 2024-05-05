@@ -5,34 +5,67 @@ Packs
 
 {%block content%}
 
+
 <h1>Packs</h1>
-<ul>
-    {%for pack in packs%}
-    <div class="col">
+{% for msg in get_flashed_messages()%}
+<p>{{msg}}</p>
+{% endfor%}
 
-        <div class="card" style="width: 18rem;">
+<div class="d-flex justify-content-between w-50 px-5">
+    <div class="d-flex card w-100">
+        <div>
+            <a href="/packs/new" type="submit" class="btn btn-secondary w-100">Add a Pack</a>
 
-            <div class="card-body">
-                <h5 class="card-title">{{pack.name}}</h5>
-                <p class="card-text">{{pack.description}}</p>
-                <a href="/packs/{{pack.id}}" class="btn btn-primary">View Pack</a>
-                <form action="/packs/{{pack.id}}/edit">
-                    <button type="submit">Update Pack</button>
-                </form>
-                <form action="/packs/{{pack.id}}/delete" method="POST">
-                    <button class="btn btn-danger">Delete Pack </button>
-                </form>
+            {% if not packs %}
+            <div class="d-flex justify-content-center">
+                <p class="text-danger mx-auto p-2">It looks like you do not have any prepared packs!</p>
             </div>
+            {% endif %}
+
+
+            {% if packs%}
+
+            <div class="d-inline w-50">
+                <div class="d-flex-column mb-3">
+                    {%for pack in packs%}
+                    <div class="card m-2">
+                        <div class="card-body">
+                            <div class="d-flex w-100 justify-content-between">
+
+                                <div class="justify-content-start">
+                                    <h3 class="card-title d-inline">{{pack.name}}</h5>
+                                </div>
+
+                                <div class="justify-content-end">
+                                    <form action="/packs/{{pack.id}}/edit" class="d-inline">
+                                        <button type="submit" class="fas fa-pen fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                                    </form>
+                                    <form action="/packs/{{pack.id}}/delete" method="POST" class="d-inline">
+                                        <button type="submit"
+                                            class="fas fa-trash fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                                    </form>
+                                </div>
+
+                            </div>
+                            <hr>
+                            <p class="card-text">{{pack.notes}}</p>
+
+
+                            <a href="/packs/{{pack.id}}" class="btn btn-primary d-block">View Pack</a>
+                        </div>
+                    </div>
+
+                    {%endfor%}
+
+                </div>
+
+            </div>
+
+            {% endif %}
         </div>
     </div>
-
-    {%endfor%}
-</ul>
-
-<div>
-    <form action="/packs/new">
-        <button type="submit">Add a Pack</button>
-    </form>
 </div>
+
+
 
 {%endblock%}
