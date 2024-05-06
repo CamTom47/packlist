@@ -5,9 +5,9 @@ Create Item
 
 {% block content%}
 <div class="mx-5">
-    <h1 class="mx-auto mb-5">Create Item Form</h1>
-
-    <div class="card text-bg-dark w-100 p-5">
+    
+    <div class="card text-bg-secondary w-100 p-5 mt-4">
+        <h1 class="p-3 mb-5">Create Item Form</h1>
 
         <h3 class="">Item Information</h3>
         <form action="/items/new" method="POST" class="row g-3" id="item-form">
@@ -23,7 +23,7 @@ Create Item
             
             {%endfor%}
             <div>
-                <button class="btn btn-secondary w-25 mt-3" type="submit" id="create-pack-button">Add New
+                <button class="btn btn-dark w-25 mt-3" type="submit" id="create-pack-button">Add New
                     Item</button>
                 </div>
                 

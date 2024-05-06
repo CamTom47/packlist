@@ -19,7 +19,7 @@ $('#rain_precautionary').after(`
     tabindex="1"
     data-bs-trigger="focus"
     data-bs-custom-class="custom-popover"
-    data-bs-title="Rai Gear"
+    data-bs-title="Rain Gear"
     data-bs-content="Does this item provide protection from the rain?">
 </a>
 `)
@@ -31,7 +31,7 @@ $('#cold_precautionary').after(`
     tabindex="2"
     data-bs-trigger="focus"
     data-bs-custom-class="custom-popover"
-    data-bs-title="Cold Gear"
+    data-bs-title="Cold Item"
     data-bs-content="Is this is item needed in colder weather conditions?">
 </a>
 `)

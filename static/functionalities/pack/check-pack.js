@@ -27,7 +27,7 @@ for(let existingItem of pack_items){
     }
 }
 
-for(let existingItem of pack_items){
+    for(let existingItem of pack_items){
     for( let item of heat_items){
         if(existingItem !== item){
             $heatSection.after(
@@ -38,9 +38,9 @@ for(let existingItem of pack_items){
 
         }
     }
-}
+    }
 
-for(let existingItem of pack_items){
+    for(let existingItem of pack_items){
     for( let item of cold_items){
         if(existingItem !== item){
             $coldSection.after(
@@ -51,9 +51,9 @@ for(let existingItem of pack_items){
 
         }
     }
-}
+    }
 
-for(let existingItem of pack_items){
+    for(let existingItem of pack_items){
     for( let item of rain_items){
         if(existingItem !== item){
             $rainSection.after(
@@ -64,9 +64,9 @@ for(let existingItem of pack_items){
 
         }
     }
-}
+    }
 
-for(let existingItem of pack_items){
+    for(let existingItem of pack_items){
     for( let item of emergency){
         if(existingItem !== item){
             $emergencySection.after(
@@ -76,7 +76,7 @@ for(let existingItem of pack_items){
                 </li>`).after('<button id="emergency-items-button" class="btn btn sucess">Next</button>')
         }
     }
-}
+    }
 
 })
 

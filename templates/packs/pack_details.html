@@ -5,20 +5,22 @@
 {%endblock%}
 {%block content %}
 
-<h1>Packs</h1>
-{% for msg in get_flashed_messages()%}
-<p>{{msg}}</p>
-{% endfor%}
+
 
 
 <div class="d-inline-flex w-100">
 
 
-    <div class="d-inline-flex card w-50 mx-4">
+    <div class="d-inline-flex card w-50 mx-4 mt-4">
+
         <a href="/packs/new" type="submit" class="btn btn-secondary w-100">Add a Pack</a>
 
         {% if not packs %}
         <div class="d-flex justify-content-center">
+            <h1>Packs</h1>
+            {% for msg in get_flashed_messages()%}
+            <p>{{msg}}</p>
+            {% endfor%}
             <p class="text-danger mx-auto p-2">It looks like you do not have any prepared packs!</p>
         </div>
         {% endif %}
@@ -28,6 +30,10 @@
 
         <div class="d-inline w-100">
             <div class="d-flex flex-column mb-3">
+                <h1>Packs</h1>
+                {% for msg in get_flashed_messages()%}
+                <p>{{msg}}</p>
+                {% endfor%}
                 {%for pack in packs%}
 
                 <div class="card m-2">
@@ -43,7 +49,7 @@
                         <p class="card-text">{{pack.notes}}</p>
 
 
-                        <a href="/packs/{{pack.id}}" class="btn btn-primary w-100">View Pack</a>
+                        <a href="/packs/{{pack.id}}" class="btn btn-dark w-100">View Pack</a>
                     </div>
                 </div>
 
@@ -54,7 +60,7 @@
     </div>
 
 
-    <div class="d-inline-flex card w-50 mx-4">
+    <div class="d-inline-flex card w-50 mx-4 mt-4">
         <div class="d-inline-flex justify-content-between w-100 px-5">
             <div class="d-inline w-100">
                 <div id="pack-section" class="d-inline w-100">
@@ -108,8 +114,10 @@
                                     {% if item.category == category %}
                                     <div class="col-4">
                                         <div class="d-flex">
-                                            <input class="pe-0 btn-check" type="checkbox" name="item-checkbox" id="{{item.name}}-checkbox">
-                                            <label class="btn btn-outline-secondary items" for="{{item.name}}-checkbox">{{item.name}}</label>
+                                            <input class="pe-0 btn-check" type="checkbox" name="item-checkbox"
+                                                id="{{item.name}}-checkbox">
+                                            <label class="btn btn-outline-secondary items"
+                                                for="{{item.name}}-checkbox">{{item.name}}</label>
 
                                         </div>
                                     </div>

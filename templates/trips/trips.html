@@ -7,18 +7,20 @@ Trips
 
 <h1>Trips</h1>
 {% for msg in get_flashed_messages() %}
-<p>{{msg}}</p>
+<div class="bg-light">
+  <p>{{msg}}</p>
+</div>
 {% endfor %}
 
 
 <div class="d-flex justify-content-between w-50 px-5 ">
-  <div class="d-flex card w-100">
+  <div class="d-flex card w-100 text-bg-secondary">
     <div>
-      <a href="/trips/new" type="submit" class="btn btn-secondary w-100">Add a New Trip</a>
+      <a href="/trips/new" type="submit" class="btn btn-dark w-100">Add a New Trip</a>
 
       {% if not trips %}
       <div class="d-flex justify-content-center">
-        <p class="text-danger mx-auto p-2">It looks like you do not have any planned trip!</p>
+        <p class="text-danger mx-auto p-2 bg-light mt-3 rounded px-4">It looks like you do not have any planned trip!</p>
       </div>
 
       {% endif %}
@@ -29,9 +31,10 @@ Trips
 
 
       <div class="d-inline w-50">
-        <div class="d-flex flex-column mb-3 text-bg-dark">
+        <div class="d-flex flex-column mb-3 text-bg-secondary">
           
           <h1>Upcoming</h1>
+          <hr>
           {% for trip in trips %}
           {% if trip.status == 1 %}
           <div class="card m-2">
@@ -59,13 +62,14 @@ Trips
               <hr>
               <span class="d-inline fw-bold">Notes:</span>
               <p class="card-text d-inline">{{trip.notes}}</p>
-              <a href="/trips/{{trip.id}}" class="btn btn-primary d-block">Trip Details</a>
+              <a href="/trips/{{trip.id}}" class="btn btn-dark d-block">Trip Details</a>
             </div>
           </div>
           {% endif %}
           {% endfor %}
           
           <h1>Completed</h1>
+          <hr>
           {% for trip in trips %}
           {% if trip.status == 2 %}
           <div class="card m-2">
@@ -90,7 +94,7 @@ Trips
               <hr>
               <span class="d-inline fw-bold">Notes:</span>
               <p class="card-text d-inline">{{trip.notes}}</p>
-              <a href="/trips/{{trip.id}}" class="btn btn-primary d-block">Trip Details</a>
+              <a href="/trips/{{trip.id}}" class="btn btn-dark d-block">Trip Details</a>
             </div>
           </div>
           {% endif %}

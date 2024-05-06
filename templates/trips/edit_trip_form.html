@@ -3,9 +3,9 @@
 Edit Trip Information
 {%endblock%}
 {%block content%}
-<h1>Edit Trip Form</h1>
 
-<div class="mx-5">
+<div class="mx-5 text-bg-secondary mt-4 rounded">
+    <h1 class="p-3">Edit Trip Form</h1>
 
     <form action="/trips/{{trip.id}}/edit" method="POST" class="row g-4 p-5">
         {{form.hidden_tag()}}
@@ -24,7 +24,7 @@ Edit Trip Information
         
         {%endfor%}
         <div>
-            <button type="submit" class="btn btn-secondary">Update Trip</button>
+            <button type="submit" class="btn btn-dark">Update Trip</button>
         </div>
     </form>
 </div>

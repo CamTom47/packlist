@@ -24,34 +24,39 @@
 
 
     {% if not g.user %}
-    <nav class="navbar bg-dark pe-3" data-bs-theme="dark">
-        <div class="mx-4">
-            <span class="navbar-text fs-2">
-                PackList
-            </span>
-        </div>
-        <ul class="nav nav-pills justify-content-end">
-            <div class="d-inline-flex">
-                <li class="nav-item">
-                    <a class="px-2 nav-dark" href="/login">Log In</a>
-                </li>
-                <li class="nav-item">
-                    <a class="px-2 nav-dark" href="/signup">Sign Up</a>
-                </li>
-            </div>
-        </ul>
-    </nav>
+    <div id="nav-div">
+        <div class="container">
 
+            <nav class="navbar d-flex sticky-top pe-3">
+                <div class="mx-4">
+                    <span class="navbar-text fs-2">
+                        PackList
+                    </span>
+                </div>
+                <ul class="nav nav-pills justify-content-end">
+                    <div class="d-inline-flex">
+                        <li class="nav-item">
+                            <a class="px-2 nav-link text-dark" href="/login">Log In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="px-2 nav-link text-dark" href="/signup">Sign Up</a>
+                        </li>
+                    </div>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
     {%endif%}
 
     {% if g.user %}
 
-    <div id="nav-div" class="bg-">
+    <div id="nav-div">
         <div class="container">
 
-        
+
             <nav class="navbar d-flex sticky-top fs-4"">
-            <ul class="nav nav-pills justify-content-start">
+            <ul class=" nav nav-pills justify-content-start">
                 <div class="mx-4">
                     <span class="navbar-text fs-2">
                         PackList
@@ -60,7 +65,8 @@
 
                 <div class="d-inline-flex justify-content-start">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" aria-current="page" href="/users/{{g.user.id}}/dashboard" id="dashboard-nav">Dashboard</a>
+                        <a class="nav-link text-dark" aria-current="page" href="/users/{{g.user.id}}/dashboard"
+                            id="dashboard-nav">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" aria-current="page" href="/trips" id="trip-nav">Trips</a>
@@ -72,28 +78,28 @@
                         <a class='nav-link text-dark' href="/items" id="item-nav">Items</a>
                     </li>
                 </div>
-            </ul>
+                </ul>
 
-            <ul class="nav nav-pills justify-content-end">
+                <ul class="nav nav-pills justify-content-end">
 
-                <div class="d-inline-flex justify-content-end">
-                    <li class="nav-item">
-                        <a class='nav-link text-dark' href="/users/{{g.user.id}}">{{g.user.name}}Profile</a>
-                    </li>
+                    <div class="d-inline-flex justify-content-end">
+                        <li class="nav-item">
+                            <a class='nav-link text-dark' href="/users/{{g.user.id}}">{{g.user.name}}Profile</a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a class='nav-link text-dark' href="/logout">Log Out</a>
-                    </li>
-                </div>
-            </ul>
-        </nav>
-    </div>
+                        <li class="nav-item">
+                            <a class='nav-link text-dark' href="/logout">Log Out</a>
+                        </li>
+                    </div>
+                </ul>
+            </nav>
+        </div>
     </div>
 
     {%endif%}
     {%block content%}
     {%endblock%}
-    
+
     <!-- <script src="static/functionalities/base.js"></script> -->
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
 </body>

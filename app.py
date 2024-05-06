@@ -92,7 +92,9 @@ def signup():
 
 
         do_login(user)
-        return redirect('/trips')
+        
+        
+        return redirect(f'/users/{user.id}/dashboard')
     
     else:
         return render_template('users/create_user_form.html', form = form )
@@ -314,7 +316,6 @@ def trip_status_update(id):
     """Updated that completion status of a trip"""
     
     trip = Trip.query.get(id)
-    print('hitting route')
     
     if trip.status == 1:
         trip.status = 2
@@ -388,8 +389,6 @@ def evaluate_pack_for_trip(trip_id, pack_id):
     
     for item in pack_items:
         pack_item_names.append(item.name)
-        
-    print(pack_item_names)
     
     categories = get_categories(pack_items)
     
@@ -398,19 +397,19 @@ def evaluate_pack_for_trip(trip_id, pack_id):
     if weather_information["temp_high"] >= 80:
         heat_items = Item.query.filter(Item.heat_precautionary == True).all()
     else: 
-        heat_items = None
+        heat_items = []
         
         
     if weather_information["temp_low"] <= 45:
         cold_items = Item.query.filter(Item.cold_precautionary == True).all()
     else: 
-        cold_items = None
+        cold_items = []
         
         
     if weather_information["chance_of_rain"] <= 25:
         rain_items = Item.query.filter(Item.rain_precautionary == True).all()
     else: 
-        rain_items = None
+        rain_items = []
         
         
     essential_items = Item.query.filter(Item.essential == True).all()
@@ -556,7 +555,6 @@ def edit_pack(id):
         db.session.commit()
 
 
-        print(request.form.getlist('pack-items'))
         new_items = request.form.getlist('pack-items')
 
         if existing_items:

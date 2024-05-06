@@ -6,15 +6,15 @@ Packs
 {%block content%}
 
 
-<h1>Packs</h1>
-{% for msg in get_flashed_messages()%}
-<p>{{msg}}</p>
-{% endfor%}
 
-<div class="d-flex justify-content-between w-50 px-5">
-    <div class="d-flex card w-100">
+<div class="d-flex justify-content-between w-50 px-5 mt-5">
+    <div class="d-flex card w-100 text-bg-secondary">
+        <h1 class="p-3">Packs</h1>
+        {% for msg in get_flashed_messages()%}
+        <p>{{msg}}</p>
+        {% endfor%}
         <div>
-            <a href="/packs/new" type="submit" class="btn btn-secondary w-100">Add a Pack</a>
+            <a href="/packs/new" type="submit" class="btn btn-dark w-100">Add a Pack</a>
 
             {% if not packs %}
             <div class="d-flex justify-content-center">
@@ -51,7 +51,7 @@ Packs
                             <p class="card-text">{{pack.notes}}</p>
 
 
-                            <a href="/packs/{{pack.id}}" class="btn btn-primary d-block">View Pack</a>
+                            <a href="/packs/{{pack.id}}" class="btn btn-dark d-block">View Pack</a>
                         </div>
                     </div>
 

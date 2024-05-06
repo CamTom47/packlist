@@ -4,9 +4,9 @@
 Sign Up Form
 {%endblock%}
 {%block content%}
-<h1>Sign Up Form</h1>
 
-<div class="mx-5">
+<div class="mx-5 text-bg-secondary mt-3 rounded">
+    <h1 class="p-3">Sign Up Form</h1>
 
     <form action="/signup" method="POST" class="row g-4 p-5">
     {{form.hidden_tag()}}
@@ -22,7 +22,7 @@ Sign Up Form
         
         {%endfor%}
         <div class="col-12">
-            <button class="btn btn-secondary" type="submit">Sign Up</button>
+            <button class="btn btn-dark" type="submit">Sign Up</button>
         </div>
     </form>
 </div>
