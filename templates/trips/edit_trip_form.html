@@ -1,0 +1,36 @@
+{% extends 'base.html'%}
+{%block title%}
+Edit Trip Information
+{%endblock%}
+{%block content%}
+
+<div class="mx-5 text-bg-secondary mt-4 rounded">
+    <h1 class="p-3">Edit Trip Form</h1>
+    {% for msg in get_flashed_messages() %}
+    <p class="ps-3">{{msg}}</p>
+    {% endfor %}
+
+    <form action="/trips/{{trip.id}}/edit" method="POST" class="row g-4 p-5">
+        {{form.hidden_tag()}}
+        
+        {%for field in form if field.widget.input_type != 'hidden'%}
+        
+
+        <div class="col-md-6">
+            <div class="col">
+                <div>
+                    {{field.label(class="form-label")}}
+                    {{field(class="form-control")}}
+                </div>
+            </div>
+        </div>
+        
+        {%endfor%}
+        <div>
+            <button type="submit" class="btn btn-dark">Update Trip</button>
+        </div>
+    </form>
+</div>
+
+<script src="../../static/functionalities/trip/create-trip.js"></script>
+{%endblock%}

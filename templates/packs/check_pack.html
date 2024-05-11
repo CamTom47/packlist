@@ -1,0 +1,255 @@
+{%extends 'base.html'%}
+
+{%block title%}
+{{pack.name}}
+{%endblock%}
+{%block content %}
+
+
+<h1>Pack Contents</h1>
+
+<ul>
+    {% for item in pack_items %}
+
+    <li id="{{item.name}}">{{item.name}}</li>
+    {% endfor%}
+</ul>
+<hr>
+
+    <form action="/trips/{{trip.id}}/{{pack.id}}/check/edit" method="POST">
+
+        <div class="essential-section">
+
+            {% if essential_items %}
+
+
+            <div class="modal fade show" id="essentialModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog rounded">
+                    <div class="modal-content">
+                        <div class="modal-header text-bg-dark p-3">
+                            <h2 class="modal-title fs-5" id="essentialModalLabel">It looks like you may be
+                                missing some essential items. Would you like to add any of the following?</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="essential-modal-body text-bg-dark p-4">
+                            <div>
+                                {% for ess_item in essential_items%}
+                                {% if ess_item.name not in pack_item_names %}
+
+
+                                <div class="d-flex m-2 card bg-light">
+                                    <input class="me-1 btn-check" name="pack-items" type="checkbox"
+                                        id="item-{{ess_item.id}}-checkbox" value="{{ess_item.name}}">
+                                    <label class="btn btn-outline-dark"
+                                        for="item-{{ess_item.id}}-checkbox">{{ess_item.name}}</label>
+                                </div>
+
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="modal-footer text-bg-dark">
+                            <a type="submit" id="essential-modal-close-button" class="btn btn-secondary" href="/trips/{{trip.id}}">Cancel Pack Check</a>
+                            <button type="button" id="essential-modal-next-button"
+                                class="btn btn-primary next-button">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="heat-section">
+
+            {% if heat_items %}
+
+
+            <div class="modal fade hide" id="heatModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+                <div class="modal-dialog rounded">
+                    <div class="modal-content">
+                        <div class="modal-header text-bg-dark p-3">
+                            <h2 class="modal-title fs-5" id="heatModalLabel">Looks like it's going to be a toasty trip!
+                                Let's make sure you're pack has what it needs</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="heat-modal-body text-bg-dark p-4">
+                            <div>
+                                {% for heat_item in heat_items%}
+                                {% if heat_item.name not in pack_item_names %}
+
+
+                                <div class="d-flex m-2 card bg-light">
+                                    <input class="me-1 btn-check" name="pack-items" type="checkbox"
+                                        id="item-{{heat_item.id}}-checkbox" value="{{heat_item.name}}">
+                                    <label class="btn btn-outline-dark"
+                                        for="item-{{heat_item.id}}-checkbox">{{heat_item.name}}</label>
+                                </div>
+
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="modal-footer text-bg-dark">
+                            <button type="button" id="heat-modal-close-button" class="btn btn-secondary previous-button"
+                                data-bs-dismiss="modal">Previous</button>
+                            <button type="button" id="heat-modal-next-button"
+                                class="btn btn-primary next-button">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="cold-section">
+
+            {% if cold_items %}
+
+
+
+            <div class="modal fade hide" id="coldModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog rounded">
+                    <div class="modal-content">
+                        <div class="modal-header text-bg-dark p-3">
+                            <h2 class="modal-title fs-5" id="coldModalLabel">It looks like your trip is going to be
+                                chilly. Let's make sure you have what you need</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="cold-modal-body text-bg-dark p-4">
+                            <div>
+                                {% for cold_item in cold_items%}
+                                {% if cold_item.name not in pack_item_names %}
+
+
+                                <div class="d-flex m-2 card bg-light">
+                                    <input class="me-1 btn-check" name="pack-items" type="checkbox"
+                                        id="item-{{cold_item.id}}-checkbox" value="{{cold_item.name}}">
+                                    <label class="btn btn-outline-dark"
+                                        for="item-{{cold_item.id}}-checkbox">{{cold_item.name}}</label>
+                                </div>
+
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="modal-footer text-bg-dark">
+                            <button type="button" id="cold-modal-close-button" class="btn btn-secondary previous-button"
+                                data-bs-dismiss="modal">Previous</button>
+                            <button type="button" id="cold-modal-next-button"
+                                class="btn btn-primary next-button">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="rain-section">
+
+            {% if rain_items %}
+
+
+
+            <div class="modal fade hide" id="rainModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog rounded">
+                    <div class="modal-content">
+                        <div class="modal-header text-bg-dark p-3">
+                            <h2 class="modal-title fs-5" id="rainModalLabel">It looks like you may get rained on a bit.
+                                Let's make sure you have some rain gear</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="rain-modal-body text-bg-dark p-4">
+                            <div>
+                                {% for rain_item in rain_items%}
+                                {% if rain_item.name not in pack_item_names %}
+
+
+                                <div class="d-flex m-2 card bg-light">
+                                    <input class="me-1 btn-check" name="pack-items" type="checkbox"
+                                        id="item-{{rain_item.id}}-checkbox" value="{{rain_item.name}}">
+                                    <label class="btn btn-outline-dark"
+                                        for="item-{{rain_item.id}}-checkbox">{{rain_item.name}}</label>
+                                </div>
+
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="modal-footer text-bg-dark">
+                            <button type="button" id="rain-modal-close-button" class="btn btn-secondary previous-button"
+                                data-bs-dismiss="modal">Previous</button>
+                            <button type="button" id="rain-modal-next-button"
+                                class="btn btn-primary next-button">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="emergency-section">
+
+            {% if emergency_items %}
+
+
+
+            <div class="modal fade hide" id="emergencyModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog rounded">
+                    <div class="modal-content">
+                        <div class="modal-header text-bg-dark p-3">
+                            <h2 class="modal-title fs-5" id="emergencyModalLabel">These items aren't needed, but may be
+                                nice to have in the event of an emergency. Would you like to add any?</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="emergency-modal-body text-bg-dark p-4">
+                            <div>
+                                {% for emergency_item in emergency_items%}
+                                {% if emergency_item.name not in pack_item_names %}
+
+
+                                <div class="d-flex m-2 card bg-light">
+                                    <input class="me-1 btn-check" name="pack-items" type="checkbox"
+                                        id="item-{{emergency_item.id}}-checkbox" value="{{emergency_item.name}}">
+                                    <label class="btn btn-outline-dark"
+                                        for="item-{{emergency_item.id}}-checkbox">{{emergency_item.name}}</label>
+                                </div>
+
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="modal-footer text-bg-dark">
+                            <button type="button" id="emergency-modal-close-button" class="btn btn-secondary previous-button"
+                                data-bs-dismiss="modal">Previous</button>
+                            <button type="submit" id="emergency-modal-next-button"
+                                class="btn btn-success next-button">Complete Check</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+<script async src="/static/functionalities/pack/check-pack.js"></script>
+
+{%endblock%}

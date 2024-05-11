@@ -1,0 +1,73 @@
+{% extends 'base.html'%}
+{%block title%}
+Edit Pack
+{%endblock%}
+{%block content%}
+
+
+<div class="mx-5">
+
+    <h1 class="mx-5">Edit Pack</h1>
+
+    <form class="d-flex w-100 " action="/packs/{{pack.id}}/edit" method="POST">
+        <div id="pack-form" class="d-flex w-50">
+            <div id="pack-section">
+                <div class="mx-5">
+                    <div class="col">
+                        {{form.hidden_tag()}}
+                        {%for field in form if field.widget.input_type != 'hidden'%}
+                        {{field.label(class="form-label")}}
+                        {{field(class="form-control")}}
+
+                        {%endfor%}
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary mt-4 w-100" id="update-pack-button">Update Pack</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-inline w-50">
+            <div class="d-row">
+                <h3>Pack Contents</h3>
+
+
+                <div class="card d-flex w-100 me-5">
+
+                    <div>
+                        <button id="item-section-button" class="btn btn-secondary w-100">Add/Remove Items</button>
+                    </div>
+                    <div>
+                        <div id="category-section" class="d-inline w-100">
+                            {% for category in categories%}
+                            <h3 class="ms-3">
+                                {{category}}
+                            </h3>
+                            <hr>
+                            <ul class="" id="{{category}}">
+                                <div class="row">
+                                    {%for item in items%}
+                                    {% if item.category == category %}
+                                    <div class="col-4">
+                                        <div class="d-flex">
+                                            <div class="d-flex ps-2 card card-body m-3 p-0">
+                                                <li class="items list-unstyled existing-item">{{item.name}}</li>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            </ul>
+
+                        </div>
+
+
+                    </div>
+    </form>
+</div>
+<script src='../../static/functionalities/pack/edit-pack.js'></script>
+{%endblock%}

@@ -1,0 +1,42 @@
+{% extends 'base.html'%}
+{%block title%}
+Create Pack
+{%endblock%}
+{%block content%}
+
+<div class="mx-5 ">
+    <h1 class="mx-auto mb-5">Create Pack Form</h1>
+
+    <div class="text-bg-secondary">
+
+        <form action="/packs/new" method="POST" class="d-flex w-100">
+            <div id="pack-form" class="d-flex w-25 card p-5 m-5 h-50">
+                <h3 class="">Pack Information</h3>
+                <div id="pack-section" class="d-inline-flex w-100">
+                    <div class="mx-5 ">
+                        <div class="col my-2">
+                            
+                            {{form.hidden_tag()}}
+                            {%for field in form if field.widget.input_type != 'hidden'%}
+                            {{field.label(class="form-label")}}
+                            {{field(class="form-control")}}
+                            
+                            {%endfor%}
+                        </div>
+                        <div>
+                            <button class="btn btn-secondary w-100 mt-3" id="item-section-button">Add Some Items</button>
+                        </div>
+                        <div>
+                            <button class="visually-hidden btn btn-secondary w-100 mt-3" type="submit" id="create-pack-button">Create New
+                                Pack</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+        </div>
+    </form>
+</div>
+
+<script src='/../../static/functionalities/pack/create-pack.js'></script>
+{%endblock%}

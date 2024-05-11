@@ -1,0 +1,204 @@
+{%extends 'base.html'%}
+
+{%block title%}
+{{trip.name}}
+{%endblock%}
+
+{%block content %}
+
+<div>
+
+
+    <div class="d-inline-flex">
+        <h1>Trips</h1>
+        {% for msg in get_flashed_messages() %}
+        <p>{{msg}}</p>
+        {% endfor %}
+    </div>
+
+    <div class="d-flex">
+
+        <div class="d-inline w-50">
+            <div class="p-3 d-block">
+                <a href="/trips/new" type="submit" class="btn btn-secondary w-100">Add a New Trip</a>
+                {%for trip in trips%}
+
+                <div class="card mx-1 d-flex">
+                    <div class="card-body">
+                        <h5 class="card-title">{{trip.name}}</h5>
+                        <hr>
+                        <span class="d-inline fw-bold">Notes:</span>
+                        <p class="card-text d-inline">{{trip.notes}}</p>
+                        <a href="/trips/{{trip.id}}" class="btn btn-dark d-block">Trip Details</a>
+                    </div>
+                </div>
+
+                {%endfor%}
+            </div>
+        </div>
+
+        <div class="container text-bg-secondary rounded mt-3">
+            <h3>Trip Information</h3>
+
+            <div class="card w-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h5 class="card-title">{{trip.name}}</h5>
+                        </div>
+
+                        <div class="d-inline-flex">
+                            <form action="/trips/{{trip.id}}/edit">
+                                <button type="submit"
+                                    class="fas fa-pen fa-lg text-decoration-none btn btn-link link-dark"></button>
+                            </form>
+
+                            <form action="/trips/{{trip.id}}/delete" method="POST">
+                                <button type="submit"
+                                    class="fas fa-trash fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                            </form>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row w-100">
+                        <div class="col-6">
+                            <span class="fw-bold">Location:</span>
+                            <p class="card-text">{{trip.location}}</p>
+                            <span class="fw-bold">Start Date:</span>
+                            <p class="card-text">{{trip.start_date}}</p>
+                            <span class="fw-bold">End Date:</span>
+                            <p class="card-text">{{trip.end_date}}</p>
+                            <span class="fw-bold">Mileage:</span>
+                            <p class="card-text">{{trip.mileage}}</p>
+                            <span class="fw-bold">Notes:</span>
+                            <p class="card-text">{{trip.notes}}</p>
+                            <div class="d-inline"></div>
+                        </div>
+
+                        <div class="col-6">
+                        {%if trip_packs%}
+
+                            {%for pack in trip_packs%}
+
+                            <p>{{pack.name}}</p>
+                            <div class="col">
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{pack.name}}</h5>
+                                        <p class="card-text">{{pack.notes}}</p>
+                                        <form action="/trips/{{trip.id}}/{{pack.id}}" method="POST">
+
+                                        </form>
+                                        <a href="/packs/{{pack.id}}" class="btn btn-secondary">View Pack</a>
+                                        <a href="/trips/{{trip.id}}/{{pack.id}}/check" class="btn btn-secondary">Pack
+                                            Ready Check</a>
+                                            <form action="/trips/{{trip.id}}/{{pack.id}}/delete" method="POST">
+                                                <button type="submit" class="btn btn-dark">Remove Pack</button>
+                                            </form>
+                                        {%endfor%}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {%endif%}
+
+
+
+                        
+                        <div class="col-12">
+                        {%if not trip_packs%}
+
+                            <div class="row">
+                                <p class="text-danger">You do not have a pack picked for this trip yet!</p>
+                            </div>
+
+
+
+
+                                    {%for pack in packs%}
+                                    <div class="row">
+                                        <div class="card" style="width: 18rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{pack.name}}</h5>
+                                                <p class="card-text">{{pack.description}}</p>
+                                                <form action="/trips/{{trip.id}}/{{pack.id}}" method="POST">
+                                                    <a href="/packs/{{pack.id}}" class="btn btn-secondary">View Pack</a>
+
+                                                    <button type="submit" class="btn btn-dark">Add Pack</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {%endfor%}
+
+                                    <div class="row">
+
+                                        <a class="btn btn-dark col-5" href="/packs/new">Create New Pack</a>
+                                    </div>
+                        </div>
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row w-100 mt-5 ms-1 text-bg-secondary rounded">
+            <h3 class="p-3">Weather</h3>
+            {% for day in daily_weather %}
+            <div class="card d-inline-block" style="width:18rem;">
+                <div class="card-body ">
+                    <div class="card-body ps-3">
+                        <h5 class="card-title trip-date">
+                            {{day["time"]}}
+                        </h5>
+                        <hr>
+                        <div class="row">
+                            <h5>
+                                Chance of Rain:
+                            </h5>
+                            <p class="row chance-of-rain-p">{{day["values"]["precipitationProbabilityAvg"]}}%</p>
+                            </div>
+                        <div class="row">
+                            <h5>
+                                Daily High:
+                            </h5>
+                            <p class="row daily-high-p">{{day["values"]["temperatureMax"]}}</p>
+                            </div>
+                        <div  class="row">
+                            <h5>
+                                Daily Low
+                            </h5>
+                            <p class="row daily-low-p">{{day["values"]["temperatureMin"]}}</p>
+                        </div>
+                        <div class="row">
+                            <h5>
+                                Sunrise
+                            </h5>
+                            <p class="row sunrise-p">{{day["values"]["sunriseTime"]}}</p>
+                        </div>
+                        <div class="row">
+                            <h5>
+                                Sunset
+                            </h5>
+                            <p class="row sunset-p">{{day["values"]["sunsetTime"]}}</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+
+
+
+
+
+
+
+    </div>
+
+    <script src="../../static/functionalities/trip/trip-details.js"></script>
+
+    {%endblock%}

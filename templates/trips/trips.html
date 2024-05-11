@@ -1,0 +1,114 @@
+{%extends 'base.html'%}
+{%block title%}
+Trips
+{%endblock%}
+
+{%block content%}
+
+<h1>Trips</h1>
+{% for msg in get_flashed_messages() %}
+<div class="bg-light">
+  <p>{{msg}}</p>
+</div>
+{% endfor %}
+
+
+<div class="d-flex justify-content-between w-50 px-5 ">
+  <div class="d-flex card w-100 text-bg-secondary">
+    <div>
+      <a href="/trips/new" type="submit" class="btn btn-dark w-100">Add a New Trip</a>
+
+      {% if not trips %}
+      <div class="d-flex justify-content-center">
+        <p class="text-danger mx-auto p-2 bg-light mt-3 rounded px-4">It looks like you do not have any planned trip!</p>
+      </div>
+
+      {% endif %}
+
+      {% if trips %}
+
+
+
+
+      <div class="d-inline w-50">
+        <div class="d-flex flex-column mb-3 text-bg-secondary">
+          
+          <h1>Upcoming</h1>
+          <hr>
+          {% for trip in trips %}
+          {% if trip.status == 1 %}
+          <div class="card m-2">
+            <div class="card-body">
+              <div class="d-flex w-100 justify-content-between">
+                <div class="justify-content-start">
+                  <div >
+                    <h5 class="card-title">{{trip.name}}</h5>
+                    
+                  </div>
+                    
+                </div>
+                <div class="justify-content-end">
+                  <form action="/trip/{{trip.id}}/status" method="POST" class="d-inline">
+                    <button type="submit" class="fas fa-check fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                  </form>
+                  <form action="/trips/{{trip.id}}/edit" class="d-inline">
+                    <button type="submit" class="fas fa-pen fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                  </form>
+                  <form action="/trips/{{trip.id}}/delete" method="POST" class="d-inline">
+                    <button type="submit" class="fas fa-trash fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                  </form>
+                </div>
+              </div>
+              <hr>
+              <span class="d-inline fw-bold">Notes:</span>
+              <p class="card-text d-inline">{{trip.notes}}</p>
+              <a href="/trips/{{trip.id}}" class="btn btn-dark d-block">Trip Details</a>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+          
+          <h1>Completed</h1>
+          <hr>
+          {% for trip in trips %}
+          {% if trip.status == 2 %}
+          <div class="card m-2">
+            <div class="card-body">
+              <div class="d-flex w-100 justify-content-between">
+                <div class="justify-content-start">
+                  <h5 class="card-title">{{trip.name}}</h5>
+
+                </div>
+                <div class="justify-content-end">
+                  <form action="/trip/{{trip.id}}/status" method="POST" class="d-inline">
+                    <button type="submit" class="fas fa-backward fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                  </form>
+                  <form action="/trips/{{trip.id}}/edit" class="d-inline">
+                    <button type="submit" class="fas fa-pen fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                  </form>
+                  <form action="/trips/{{trip.id}}/delete" method="POST" class="d-inline">
+                    <button type="submit" class="fas fa-trash fa-lg text text-decoration-none btn btn-link link-dark"></button>
+                  </form>
+                </div>
+              </div>
+              <hr>
+              <span class="d-inline fw-bold">Notes:</span>
+              <p class="card-text d-inline">{{trip.notes}}</p>
+              <a href="/trips/{{trip.id}}" class="btn btn-dark d-block">Trip Details</a>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        
+        </div>
+
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+{%endblock%}

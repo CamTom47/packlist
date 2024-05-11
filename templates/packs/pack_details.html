@@ -1,0 +1,139 @@
+{%extends 'base.html'%}
+
+{%block title%}
+{{pack.name}}
+{%endblock%}
+{%block content %}
+
+
+
+
+<div class="d-inline-flex w-100">
+
+
+    <div class="d-inline-flex card w-50 mx-4 mt-4">
+
+        <a href="/packs/new" type="submit" class="btn btn-secondary w-100">Add a Pack</a>
+
+        {% if not packs %}
+        <div class="d-flex justify-content-center">
+            <h1>Packs</h1>
+            {% for msg in get_flashed_messages()%}
+            <p>{{msg}}</p>
+            {% endfor%}
+            <p class="text-danger mx-auto p-2">It looks like you do not have any prepared packs!</p>
+        </div>
+        {% endif %}
+
+        {% if packs %}
+
+
+        <div class="d-inline w-100">
+            <div class="d-flex flex-column mb-3">
+                <h1>Packs</h1>
+                {% for msg in get_flashed_messages()%}
+                <p>{{msg}}</p>
+                {% endfor%}
+                {%for pack in packs%}
+
+                <div class="card m-2">
+                    <div class="card-body">
+                        <div class="d-flex w-100 justify-content-between">
+
+                            <div class="justify-content-start">
+                                <h5 class="card-title d-inline">{{pack.name}}</h5>
+                            </div>
+
+                        </div>
+                        <hr>
+                        <p class="card-text">{{pack.notes}}</p>
+
+
+                        <a href="/packs/{{pack.id}}" class="btn btn-dark w-100">View Pack</a>
+                    </div>
+                </div>
+
+                {%endfor%}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="d-inline-flex card w-50 mx-4 mt-4">
+        <div class="d-inline-flex justify-content-between w-100 px-5">
+            <div class="d-inline w-100">
+                <div id="pack-section" class="d-inline w-100">
+                    <div class="d-inline-flex w-100 justify-content-between">
+
+                        <div>
+                            <h1>{{pack.name}}</h1>
+                        </div>
+                        <div>
+
+                            <div class="d-inline-flex">
+
+                                <a href="/packs/{{pack.id}}/edit" type="submit"
+                                    class="fas fa-pen text fa-lg text-decoration-none link-dark mt-4 "></a>
+                            </div>
+
+                            <div class="d-inline-flex">
+
+                                <form action="/packs/{{pack.id}}/delete" method="POST">
+                                    <button type="submit"
+                                        class="fas fa-trash fa-lg text text-decoration-none btn btn-link link-dark mt-4 ms-3"></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-inline-flex w-100 justify-content-between pe-5">
+
+                        <div id="pack-notes">
+                            <p>
+                                {{pack.notes}}
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div>
+
+                        {% for category in categories%}
+                        <div id="item-categories" class="d-inline w-100">
+                            <h3 class="ms-3">
+                                <button class="btn btn-sm btn-secondary fas fa-angle-down" data-bs-toggle="collapse"
+                                    data-bs-target="#{{category}}" role="button">
+                                </button>
+                                {{category}}
+                            </h3>
+                            <hr>
+                            <ul class="collapse" id="{{category}}">
+                                <div class="row">
+                                    {%for item in items%}
+                                    {% if item.category == category %}
+                                    <div class="col-4">
+                                        <div class="d-flex">
+                                            <input class="pe-0 btn-check" type="checkbox" name="item-checkbox"
+                                                id="{{item.name}}-checkbox">
+                                            <label class="btn btn-outline-secondary items"
+                                                for="{{item.name}}-checkbox">{{item.name}}</label>
+
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <hr>
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="../../static/functionalities/pack/pack-details.js"></script>
+{%endblock%}

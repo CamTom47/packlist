@@ -1,0 +1,39 @@
+{% extends 'base.html'%}
+
+{%block title%}
+Sign Up Form
+{%endblock%}
+{%block content%}
+
+<div class="mx-5 text-bg-secondary mt-3 rounded">
+    <h1 class="p-3">Sign Up Form</h1>
+    {% for msg in get_flashed_messages() %}
+    <p class="p-3">{{msg}}</p>
+    {% endfor %}
+
+    <form action="/signup" method="POST" class="row g-4 p-5">
+    {{form.hidden_tag()}}
+    
+    {% for field in form if field.widget.input_type != 'hidden' %}
+        
+        <div class="col-md-6">
+            <div class="col">
+                {{field.label(class="form-label")}}
+                    {{field(class="form-control")}}
+
+                    <p>
+
+                        {% for error in field.errors %}
+                        {{error}}
+                        {% endfor %}
+                    </p>
+            </div>
+        </div>
+        
+        {%endfor%}
+        <div class="col-12">
+            <button class="btn btn-dark" type="submit">Sign Up</button>
+        </div>
+    </form>
+</div>
+{%endblock%}

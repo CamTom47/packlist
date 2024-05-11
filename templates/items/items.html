@@ -1,0 +1,71 @@
+{%extends 'base.html'%}
+
+{%block title%}
+Items
+{%endblock%}
+{%block content %}
+
+<div class="m-3 p-3 bg-secondary-subtle rounded">
+
+
+<div class="d-flex justify-content-between w-25 ps-3">
+    <h1>Items</h1>
+
+</div>
+{% for msg in get_flashed_messages()%}
+<p class="fs-3 text-success">{{msg}}</p>
+{% endfor%}
+<a class="btn btn-secondary ms-2" href="/items/new">Add New Item</a>
+<div class="d-inline-flex">
+<div class="w-50">
+    {% for category in categories%}
+    <div id="item-categories" class="d-flex w-100">
+        <ul id="{{category}}" class="card w-100 text-bg-dark m-2 p-5">
+            <h3 class="ms-3 pt-3">{{category}}</h3>
+            <div class="border-top border-light pt-3">
+
+            </div>
+            <div class="row g-3">
+                {%for item in items%}
+                {% if item.category == category %}
+                <div class="d-flex py-2 col-md-4">
+                    <input class="pe-0 btn-check" type="checkbox" name="item-checkbox" id="{{item.id}}-checkbox">
+                    <label class="btn btn-outline-light fs-4 item-label" for="{{item.id}}-checkbox">{{item.name}}
+                        
+                    </label>
+                    {% if item.removable == True %}
+                        <a href="/items/{{item.id}}/edit"
+                            class="fas fa-pen text text-decoration-none btn btn-link link-light "
+                            role="button"></a>
+
+                            <form action="/items/{{item.id}}/delete" method="POST">
+
+                                <button type="submit" class="fas fa-trash text text-decoration-none btn btn-link link-light">
+                                </form>
+                            </button>
+                        {% endif %}
+
+                </div>
+
+                {% endif %}
+
+                {% endfor %}
+            </div>
+        </ul>
+    </div>
+    {% endfor %}
+
+    
+</div>
+<div id="item-details"  class="d-flex h-50 w-50 mt-5">
+
+        
+
+</div>
+
+    
+</div>
+</div>
+<script src="../../static/functionalities//item//items.js"></script>
+
+{%endblock%}

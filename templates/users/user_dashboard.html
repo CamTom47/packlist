@@ -1,0 +1,157 @@
+{%extends 'base.html'%}
+
+{%block title%}
+Dashboard
+{%endblock%}
+{%block content %}
+{% for msg in get_flashed_messages()%}
+<p>{{msg}}</p>
+{% endfor%}
+
+
+<div class="container-fluid bg-dark card overflow-hidden p-5">
+
+    <!-- User Stastics -->
+
+    <div class="row  card text-bg-secondary px-5  g-1 mb-4 me-5 border border-light">
+        <div class="col-8">
+            {% for msg in get_flashed_messages() %}
+            <p class="fs-3">{{msg}}</p>
+            {% endfor %}
+            <h3 class="py-4 card-header">Dashboard</h3>
+
+            <div class="row  pt-3">
+                <div class="col-6 ge-2">
+
+                    <div class="container">
+                        <div class="col">
+
+                            <p class="row  fs-4">
+                                Trips Completed:
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row ">
+                        <div class="col-4">
+                            <p class="fs-4">
+                                {{total_trips}}
+                            </p>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-6">
+                    <p class="fs-4">
+                        Planned Trips:
+                    </p>
+                    <p class="fs-4">
+                        {{upcoming_trip_count}}
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-6">
+                    <p class="fs-4">
+                        Average Trip Mileage:
+                    </p>
+                    <p class="fs-4">
+                        {{avg_mileage}}
+                    </p>
+
+                </div>
+                <div class="col-6">
+                    <p class="fs-4">Overall Trip Mileage:</p>
+                    <p class="fs-4">
+                        {{trip_mileage}}
+                    </p>
+
+                </div>
+            </div>
+            <p class="fs-4">Total Days Spend Backpacking:</p>
+            <p class="fs-4">
+                {{days_backpacking}}
+            </p>
+        </div>
+    </div>
+
+
+    <!-- Trip Information -->
+
+    <div class="row  gx-4">
+
+        <div class="col card text-bg-secondary border border-light mb-4 me-4 ms-2">
+            <div class="p-3">
+
+                
+                <h1 class="card-header px-0 mx-0">Trips</h1>
+
+
+                <h3>
+                    Upcoming
+                </h3>
+                
+                <div class="row">
+
+                    {% for trip in trips%}
+                    
+                    {% if trip.status == 1 %}
+                    
+                    <div class="col-12 fs-5 ps-5 btn btn-dark ">
+                        <a href="/trips/{{trip.id}}" class=" text text-decoration-none link-light">
+                            {{trip.name}} 
+                        </a>
+                    </div>
+                    {% endif %}
+                    
+                    {% endfor %}
+                </div>
+
+
+                <h3>
+                    Completed
+                </h3>
+
+                    <div class="row">
+                        
+                        
+                        {% for trip in trips%}
+                        {% if trip.status == 2 %}
+                        <div class="col-12 fs-5 ps-5 btn btn-dark ">
+                            <a href="/trips/{{trip.id}}" class="text-decoration-none link-light">
+                                {{trip.name}}
+                            </a>
+                            
+                        </div>
+                        
+                        
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+            </div>
+        </div>
+
+        <!-- Pack Information -->
+
+        <div class="col card text-bg-secondary border border-light me-5">
+            <div class="p-3">
+
+                <h1 class="card-header">Packs</h1>
+                {% for pack in packs %}
+                <div class="btn btn-dark mt-3 pb-0 d-block fs-5">
+                    <a href="/packs/{{pack.id}}" class="text-decoration-none link-dark text-light">
+                        <p>{{pack.name}}</p>
+                    </a>
+                </div>
+                
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{%block title%}{%endblock%}</title>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/bootstrap"></script>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <link rel="stylesheet" href="/static/stylesheets/style.css">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <script src="https://unpkg.com/jquery"></script>
+
+    {% block head %}
+
+    {% endblock %}
+
+</head>
+
+<body>
+
+
+    {% if not g.user %}
+    <div id="nav-div">
+        <div class="container">
+
+            <nav class="navbar d-flex sticky-top pe-3 fs-4">
+                <div class="mx-4">
+                    <span class="navbar-text fs-2">
+                        PackList
+                    </span>
+                </div>
+                <ul class="nav nav-pills justify-content-end">
+                    <div class="d-inline-flex">
+                        <li class="nav-item">
+                            <a class="px-2 nav-link text-dark" href="/login">Log In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="px-2 nav-link text-dark" href="/signup">Sign Up</a>
+                        </li>
+                    </div>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+    {%endif%}
+
+    {% if g.user %}
+
+    <div id="nav-div">
+        <div class="container">
+
+
+            <nav class="navbar d-flex sticky-top fs-4"">
+            <ul class=" nav nav-pills justify-content-start">
+                <div class="mx-4">
+                    <span class="navbar-text fs-2">
+                        PackList
+                    </span>
+                </div>
+
+                <div class="d-inline-flex justify-content-start">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" aria-current="page" href="/users/{{g.user.id}}/dashboard"
+                            id="dashboard-nav">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" aria-current="page" href="/trips" id="trip-nav">Trips</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class='nav-link text-dark' href="/packs" id="pack-nav">Packs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class='nav-link text-dark' href="/items" id="item-nav">Items</a>
+                    </li>
+                </div>
+                </ul>
+
+                <ul class="nav nav-pills justify-content-end">
+
+                    <div class="d-inline-flex justify-content-end">
+                        <li class="nav-item">
+                            <a class='nav-link text-dark' href="/users/{{g.user.id}}">Profile</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class='nav-link text-dark' href="/logout">{{g.user.username}} Log Out</a>
+                        </li>
+                    </div>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    {%endif%}
+    {%block content%}
+    {%endblock%}
+
+    <!-- <script src="static/functionalities/base.js"></script> -->
+    <script src="https://unpkg.com/axios/dist/axios.js"></script>
+</body>
+
+</html>
