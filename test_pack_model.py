@@ -9,17 +9,12 @@
 
 # sys.path.append(parent)
 
-from app import app
+from app import app, create_app
 from unittest import TestCase
-from models import db, Pack, TripPack, Trip, Item, PackItem, User
+from models import db, connect_db, Pack, TripPack, Trip, Item, PackItem, User
 
-# Connect to a test database prior to importing app
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///packlist_test'
-app.config['SQLALCHEMY_ECHO'] = False
-
-# import application
-
+app = create_app('packlist_test', testing=True)
+connect_db(app)
 
 db.create_all()
 

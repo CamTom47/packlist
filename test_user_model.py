@@ -1,27 +1,13 @@
 """Test User Model"""
 
-# import os
-# import sys 
-
-# current = os.path.dirname(os.path.realpath(__file__))
-
-# parent = os.path.dirname(current)
-
-# sys.path.append(parent)
-
-from app import app
+from app import app, create_app
 from unittest import TestCase
-from models import db, User, UserTrip, Trip, TripStatus
+from models import db, connect_db, User, UserTrip, Trip, TripStatus
 
 from flask_bcrypt import Bcrypt
 
-
-# Connect to a test database prior to importing app
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///packlist_test'
-app.config['SQLALCHEMY_ECHO'] = False
-
-# import application
+app = create_app('packlist_test', testing=True)
+connect_db(app)
 
 
 db.create_all()
