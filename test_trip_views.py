@@ -1,6 +1,6 @@
 """Test Route Views"""
 
-from app import app, CURR_USER_KEY, g, add_user_to_g,create_app
+from app import g, create_app, CURR_USER_KEY
 from unittest import TestCase
 from models import db, connect_db, Trip, UserTrip, User, Pack, TripPack, TripStatus
 
@@ -14,7 +14,6 @@ connect_db(app)
 
 db.create_all()
 
-
 class TestTripViews(TestCase):
     def setUp(self):
         db.drop_all()
@@ -27,9 +26,10 @@ class TestTripViews(TestCase):
                 "testpassword1"
             )
         
-        trip_status = TripStatus(id= 1,status = 'upcoming')
-        db.session.add(trip_status)
-        db.session.commit()
+        
+        
+        
+        
         
         test_user_id = 1111
         test_user.id = test_user_id
@@ -40,6 +40,20 @@ class TestTripViews(TestCase):
         
         self.test_user = test_user
         self.test_user_id = test_user.id
+        
+        trip_status1 = TripStatus(status = 'Upcoming')
+        trip_status2 = TripStatus(status = 'Completed')
+        
+        trip_status1_id = 1
+        trip_status1.id = trip_status1_id
+        trip_status2_id = 2
+        trip_status2.id = trip_status2_id
+        
+        db.session.add(trip_status1)
+        db.session.add(trip_status2)
+        db.session.commit()
+        
+        
         
         trip = Trip(
             name = 'testTrip',
@@ -173,9 +187,11 @@ class TestTripViews(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn("Log In Form", str(resp.data))
             
-    def test_show_succcessfull_trip_status_update(self):
+    def test_show_succcessful_trip_status_update(self):
         """Test render content of updating a trip status"""
         with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.test_user_id
             resp = c.post(f"/trips/{self.trip.id}/status", follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)
@@ -206,6 +222,8 @@ class TestTripViews(TestCase):
     def test_add_pack_to_trip(self):
         """Test render content when a user adds a pack to their trip"""
         with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.test_user_id
             resp = c.post(f"/trips/{self.trip.id}/{self.pack.id}", follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)
@@ -238,6 +256,12 @@ class TestTripViews(TestCase):
     def test_pack_check_edit(self):
         """Test the render contents of after a user updates a pack via the check pack functaionality"""
         with self.client as c:
+            with self.client as c:
+                with c.session_transaction() as sess:
+                    sess[CURR_USER_KEY] = self.test_user.id
+            
+            g.user = sess[CURR_USER_KEY]
+            
             resp = c.post(f"/trips/{self.trip.id}/{self.pack.id}/check/edit", follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)

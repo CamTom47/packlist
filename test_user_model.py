@@ -1,6 +1,6 @@
 """Test User Model"""
 
-from app import app, create_app
+from app import create_app
 from unittest import TestCase
 from models import db, connect_db, User, UserTrip, Trip, TripStatus
 

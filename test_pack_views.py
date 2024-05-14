@@ -1,6 +1,6 @@
 """Test Pack Model"""
 
-from app import app, CURR_USER_KEY, g, create_app
+from app import g, create_app
 from unittest import TestCase
 from models import db, connect_db, Pack, TripPack, Trip, Item, PackItem, User
 
@@ -9,6 +9,9 @@ connect_db(app)
 
 
 db.create_all()
+
+CURR_USER_KEY = 'curr_user'
+
 
 class PackModelTestCase(TestCase):
     
@@ -28,6 +31,7 @@ class PackModelTestCase(TestCase):
                 "testpassword1"
             )
         
+
         
         test_user_id = 1111
         test_user.id = test_user_id
@@ -165,6 +169,7 @@ class PackModelTestCase(TestCase):
     def test_show_unauthorized_pack_delete(self):
         """Test render content of trying to delete a pack when not logged in"""
         with self.client as c:
+    
             resp = c.post(f"/packs/{self.pack.id}/delete", follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)

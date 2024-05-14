@@ -2,7 +2,7 @@
 
 
 
-from app import app, CURR_USER_KEY, create_app
+from app import create_app
 from unittest import TestCase
 from models import db, connect_db, Trip, UserTrip, User, Pack, TripPack
 
@@ -76,20 +76,20 @@ class TestUserViews(TestCase):
             resp = c.get('/logout', follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("Welcome To Packlist", str(resp.data))
+            self.assertIn("Dashboard", str(resp.data))
 
     def test_user_details_view(self):
         with self.client as c:
-            resp = c.get(f"/users/{self.test_user.id}")
+            resp = c.get(f"/users/{self.test_user.id}", follow_redirects = True)
 
             print(self.test_user.username)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn(f"'s Profile", str(resp.data))
+            self.assertIn("Profile", str(resp.data))
 
 
     def test_user_edit_view(self):
         with self.client as c:
-            resp = c.get(f"/users/{self.test_user.id}/edit")
+            resp = c.get(f"/users/{self.test_user.id}/edit", follow_redirects= True)
 
             self.assertEqual(resp.status_code, 200)

@@ -1,15 +1,6 @@
 """Test Pack Model"""
 
-# import os
-# import sys 
-
-# current = os.path.dirname(os.path.realpath(__file__))
-
-# parent = os.path.dirname(current)
-
-# sys.path.append(parent)
-
-from app import app, create_app
+from app import create_app
 from unittest import TestCase
 from models import db, connect_db, Pack, TripPack, Trip, Item, PackItem, User
 

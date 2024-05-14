@@ -9,6 +9,17 @@ from dashboard import count_trips_completed, count_upcoming_trips, average_trip_
 from sqlalchemy import exc, and_, or_
 
 
+CURR_USER_KEY = 'curr_user'
+
+def add_user_to_g():
+        """See if user is logged in, add current user to Flask global"""
+
+        if CURR_USER_KEY in session:
+            g.user = User.query.get(session[CURR_USER_KEY])
+
+        else:
+            g.user = None
+            
 def create_app(database_name, testing=False):
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql:///{database_name}'
@@ -21,7 +32,6 @@ def create_app(database_name, testing=False):
 
     debug = DebugToolbarExtension(app)
 
-    CURR_USER_KEY = 'curr_user'
 
     def get_categories(items):
         """Return an Set of categories that the items belong to"""
@@ -47,14 +57,8 @@ def create_app(database_name, testing=False):
         }
 
     @app.before_request
-    def add_user_to_g():
-        """See if user is logged in, add current user to Flask global"""
-
-        if CURR_USER_KEY in session:
-            g.user = User.query.get(session[CURR_USER_KEY])
-
-        else:
-            g.user = None
+    def add_user():
+        add_user_to_g()
             
             
     def do_login(user):
@@ -349,11 +353,15 @@ def create_app(database_name, testing=False):
         
         return render_template('trips/edit_trip_form.html', form=form, trip=trip)
 
-    @app.route('/trip/<int:id>/status', methods=["POST"])
+    @app.route('/trips/<int:id>/status', methods=["POST"])
     def trip_status_update(id):
         """Updated that completion status of a trip"""
         
         trip = Trip.query.get(id)
+        
+        if not g.user:
+            flash("Please login", "error")
+            return redirect('/login')
         
         if trip.status == 1:
             trip.status = 2

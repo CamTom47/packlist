@@ -1,6 +1,6 @@
 """Test Pack Model"""
 
-from app import app, CURR_USER_KEY, create_app, g
+from app import create_app, g
 from unittest import TestCase
 from models import db,connect_db, Pack,Item, PackItem, User
 
@@ -11,6 +11,8 @@ connect_db(app)
 
 
 db.create_all()
+
+CURR_USER_KEY = 'curr_user'
 
 class ItemModelTestCase(TestCase):
     
@@ -29,7 +31,7 @@ class ItemModelTestCase(TestCase):
                 "testuser1",
                 "testpassword1"
             )
-        
+            
         
         test_user_id = 1111
         test_user.id = test_user_id
