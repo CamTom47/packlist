@@ -266,3 +266,4 @@ class TestTripViews(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn(f"{self.trip.name}", str(resp.data))
+

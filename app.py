@@ -787,7 +787,3 @@ def create_app(database_name, testing=False):
         return redirect('/items')
     
     return app
-
-    
-
-
