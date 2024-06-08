@@ -789,8 +789,8 @@ def create_app(database_name, testing=False):
     return app
 
     
+app = create_app('packlist')
+
 if __name__ == '__main__':
-    
-    app = create_app('packlist')
     connect_db(app)
     app.run(debug=True, host="0.0.0.0", port=6543 )
