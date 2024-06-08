@@ -793,4 +793,4 @@ if __name__ == '__main__':
     
     app = create_app('packlist')
     connect_db(app)
-    app.run(debug=True host="0.0.0.0", port=6543 )
+    app.run(debug=True, host="0.0.0.0", port=6543 )
