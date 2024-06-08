@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Item, Pack, User, UserTrip, Trip, TripPack, PackItem, TripStatus
 from forms import AddUserForm, EditUserForm, LoginForm, AddTripForm, AddPackForm, EditPackForm, EditTripForm, AddItemForm, EditItemForm
-from secret import G_API_KEYL, POSTGRES_KEY
+from secret import G_API_KEY, POSTGRES_KEY
 from weather import get_weather_information, get_weather_highs_lows
 from dashboard import count_trips_completed, count_upcoming_trips, average_trip_mileage, total_mileage_completed, total_days_backpacking
 from sqlalchemy import exc, and_, or_
