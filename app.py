@@ -24,7 +24,7 @@ def add_user_to_g():
             
 def create_app(database_name, testing=False):
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgres://postgres.cqposqomiyvuhvesjgop:{POSTGRES_KEY}@aws-0-us-west-1.pooler.supabase.com:6543/postgres'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres.cqposqomiyvuhvesjgop:{POSTGRES_KEY}@aws-0-us-west-1.pooler.supabase.com:6543/postgres'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = True
     app.config['SECRET_KEY'] = "secret secrets"
