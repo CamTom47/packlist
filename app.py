@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Item, Pack, User, UserTrip, Trip, TripPack, PackItem, TripStatus
 from forms import AddUserForm, EditUserForm, LoginForm, AddTripForm, AddPackForm, EditPackForm, EditTripForm, AddItemForm, EditItemForm
-from secret import G_API_KEY
+from secret import G_API_KEYL, POSTGRES_KEY
 from weather import get_weather_information, get_weather_highs_lows
 from dashboard import count_trips_completed, count_upcoming_trips, average_trip_mileage, total_mileage_completed, total_days_backpacking
 from sqlalchemy import exc, and_, or_
@@ -20,9 +20,11 @@ def add_user_to_g():
         else:
             g.user = None
             
+            
+            
 def create_app(database_name, testing=False):
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql:///{database_name}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgres://postgres.cqposqomiyvuhvesjgop:{POSTGRES_KEY}@aws-0-us-west-1.pooler.supabase.com:6543/postgres'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = True
     app.config['SECRET_KEY'] = "secret secrets"
