@@ -788,7 +788,6 @@ def create_app(database_name, testing=False):
     return app
 
     
-if __name__ == '__main__':
-    app = create_app('packlist')
-    connect_db(app)
-    app.run(debug=True)
+app = create_app('packlist')
+connect_db(app)
+app.run(debug=True)
