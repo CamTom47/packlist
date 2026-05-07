@@ -1,4 +1,20 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
+from datetime import date
+from ..db import cur
+
+
+class Trip(BaseModel):
+    id: int | None = None
+    name: str            
+    location: str            
+    start_date: date         
+    end_date: date         
+    mileage: int | None = None
+    notes: str | None = None
+    lat: float | None = None
+    lng: float | None = None
+    status: int         
 
 router = APIRouter(
     prefix='/trips',
@@ -8,19 +24,52 @@ router = APIRouter(
 @router.get('/')
 def find_all_trips():
     """Show all trips"""
-    
 
-    return 
+    query = """
+            SELECT id, name, location, start_date, end_date, mileage, notes, lat, lng, status
+            FROM trips
+            """
+    cur.execute(query)
+    trips = cur.fetchall()
+    
+    return trips
 
 @router.get('/{trip_id}')
 def find_a_trip(trip_id):
     """Show the details of a trip"""
-    return 
+    
+    query = """
+        SELECT id, name, location, start_date, end_date, mileage, notes, lat, lng, status
+        FROM trips
+        WHERE id = %s
+        """
+    cur.execute(query, trip_id)
+    trip = cur.fetchone()
+    return trip
 
 @router.post('/')
-def create_new_trip():
+def create_new_trip(data: Trip):
     """Creata a new trip"""
-    return
+    
+    data = data.model_dump()
+    query = """
+            INSERT INTO trips (name, location, start_date, end_date, mileage, notes, lat, lng, status)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            RETURNING name, location, start_date AS "startDate", end_date AS "endDate", mileage, notes, lat, lng, status
+            """
+    cur.execute(query, (
+         data['name'],
+         data['location'],
+         data['start_date'],
+         data['end_date'],
+         data['mileage'],
+         data['notes'],
+         data['lat'],
+         data['lng'],
+         data['status']))
+    
+    new_trip = cur.fetchone()
+    return new_trip
 
 
 @router.put('/{trip_id}')
@@ -37,6 +86,7 @@ def delete_trip(trip_id):
 @router.post('/{trip_id}/addpack')
 def add_pack_to_trip(trip_id):
     """Add a pack to a trip"""
+
     
     # get pack id from request
     return
