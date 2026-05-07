@@ -1,8 +1,8 @@
 """Test Route Views"""
 
-from app import g, create_app, CURR_USER_KEY
+from packlist.app import g, create_app, CURR_USER_KEY
 from unittest import TestCase
-from models import db, connect_db, Trip, UserTrip, User, Pack, TripPack, TripStatus
+from packlist.models import db, connect_db, Trip, UserTrip, User, Pack, TripPack, TripStatus
 
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError

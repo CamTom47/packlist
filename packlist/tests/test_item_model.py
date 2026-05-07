@@ -4,8 +4,8 @@ from flask import Flask
 from unittest import TestCase
 from flask_bcrypt import Bcrypt
 
-from models import connect_db, db, Item, Pack, PackItem, User
-from app import create_app
+from packlist.models import connect_db, db, Item, Pack, PackItem, User
+from packlist.app import create_app
 
 app = create_app('packlist_test', testing=True)
 connect_db(app)

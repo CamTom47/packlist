@@ -1,8 +1,8 @@
 """Test User Model"""
 
-from app import create_app
+from packlist.app import create_app
 from unittest import TestCase
-from models import db, connect_db, User, UserTrip, Trip, TripStatus
+from packlist.models import db, connect_db, User, UserTrip, Trip, TripStatus
 
 from flask_bcrypt import Bcrypt
 

@@ -1,11 +1,10 @@
 import os 
 from flask import Flask, render_template, request, redirect, session, g, jsonify, flash
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, Item, Pack, User, UserTrip, Trip, TripPack, PackItem, TripStatus
-from forms import AddUserForm, EditUserForm, LoginForm, AddTripForm, AddPackForm, EditPackForm, EditTripForm, AddItemForm, EditItemForm
-from secret import G_API_KEY
-from weather import get_weather_information, get_weather_highs_lows
-from dashboard import count_trips_completed, count_upcoming_trips, average_trip_mileage, total_mileage_completed, total_days_backpacking
+from packlist.models import db, connect_db, Item, Pack, User, UserTrip, Trip, TripPack, PackItem, TripStatus
+from packlist.forms import AddUserForm, EditUserForm, LoginForm, AddTripForm, AddPackForm, EditPackForm, EditTripForm, AddItemForm, EditItemForm
+from packlist.weather import get_weather_information, get_weather_highs_lows
+from packlist.dashboard import count_trips_completed, count_upcoming_trips, average_trip_mileage, total_mileage_completed, total_days_backpacking
 from sqlalchemy import exc, and_, or_
 
 
@@ -304,7 +303,7 @@ def create_app(database_name, testing=False):
             flash("You do not have permissions to view this trip")
             return redirect('/trips')
         
-        key = G_API_KEY
+        key = os.getenv("G_API_KEY")
         
         trip_packs = TripPack.query.join(Trip, TripPack.trip_id == Trip.id).filter(TripPack.trip_id == trip.id).all()
 
@@ -778,8 +777,9 @@ def create_app(database_name, testing=False):
         
         flash('Item deleted', 'success')
         return redirect('/items')
+    
+    return app
 
-if __name__ == ('__main__'):
-    app = create_app('packlist')
-    connect_db(app)
-    app.run(debug=True)
+
+app = create_app('packlist')
+connect_db(app)

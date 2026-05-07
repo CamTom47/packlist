@@ -1,8 +1,8 @@
 """Test Pack Model"""
 
-from app import g, create_app
+from packlist.app import g, create_app
 from unittest import TestCase
-from models import db, connect_db, Pack, TripPack, Trip, Item, PackItem, User
+from packlist.models import db, connect_db, Pack, TripPack, Trip, Item, PackItem, User
 
 app = create_app('packlist_test', testing=True)
 connect_db(app)

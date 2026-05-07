@@ -1,8 +1,8 @@
 """Test Pack Model"""
 
-from app import create_app, g
+from packlist.app import create_app, g
 from unittest import TestCase
-from models import db,connect_db, Pack,Item, PackItem, User
+from packlist.models import db,connect_db, Pack,Item, PackItem, User
 
 # Connect to a test database prior to importing app
 

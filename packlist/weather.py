@@ -1,8 +1,7 @@
 import requests
-from secret import TOMORROW_API_KEY
 
 def get_weather_information(lat, lng):
-    url = f"https://api.tomorrow.io/v4/weather/forecast?location={lat},{lng}&timesteps=1d&apikey={TOMORROW_API_KEY}"
+    url = f"https://api.tomorrow.io/v4/weather/forecast?location={lat},{lng}&timesteps=1d&apikey={os.getenv('TOMORROW_API_KEY')}"
 
     resp = requests.get(url)
     json_resp = resp.json()

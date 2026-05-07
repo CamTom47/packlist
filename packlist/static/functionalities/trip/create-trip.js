@@ -31,8 +31,6 @@ $('document').ready(() => {
         <script 
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgdY21omysISJ--jQIkHTCsreCZPxTR8w&loading=async&libraries=places&callback=initAutocomplete" async defer>
         </script>`)
-        
-
     })
     
     async function getLatLong(place){

@@ -2,9 +2,9 @@
 
 
 
-from app import create_app
+from packlist.app import create_app
 from unittest import TestCase
-from models import db, connect_db, Trip, UserTrip, User, Pack, TripPack
+from packlist.models import db, connect_db, Trip, UserTrip, User, Pack, TripPack
 
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError

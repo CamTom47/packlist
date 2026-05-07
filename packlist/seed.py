@@ -1,5 +1,5 @@
-from models import TripStatus, User, Item, db
-from app import app
+from packlist.models import TripStatus, User, Item, db
+from packlist.app import app
 
 db.drop_all()
 db.create_all()
