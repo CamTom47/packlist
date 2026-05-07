@@ -73,8 +73,16 @@ def create_new_trip(data: Trip):
 
 
 @router.put('/{trip_id}')
-def edit_a_trip(trip_id):
+def edit_a_trip(trip_id, data: Trip):
     """Handle edit trip form"""
+    query = """
+            UPDATE trips
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            WHERE id = %s
+            RETURNING 
+            """
+    
+    cur.execute(query, (name, location, start_date, end_date, mileage, notes, lat, lng, status))
     return
     
 
