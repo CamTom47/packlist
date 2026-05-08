@@ -2,10 +2,10 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from datetime import date
 from ..db import cur
+from ..helpers.sql import serialize
 
 
 class Trip(BaseModel):
-    id: int | None = None
     name: str            
     location: str            
     start_date: date         
@@ -52,6 +52,7 @@ def create_new_trip(data: Trip):
     """Creata a new trip"""
     
     data = data.model_dump()
+    
     query = """
             INSERT INTO trips (name, location, start_date, end_date, mileage, notes, lat, lng, status)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
@@ -75,15 +76,24 @@ def create_new_trip(data: Trip):
 @router.put('/{trip_id}')
 def edit_a_trip(trip_id, data: Trip):
     """Handle edit trip form"""
-    query = """
+    
+    data = data.model_dump()
+    
+    set_cols  = serialize(data)["set_cols"]
+    raw_values = serialize(data)["raw_values"]
+    
+    query = f"""
             UPDATE trips
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            SET
+            {set_cols}
             WHERE id = %s
-            RETURNING 
+            RETURNING *
             """
     
-    cur.execute(query, (name, location, start_date, end_date, mileage, notes, lat, lng, status))
-    return
+    cur.execute(query, (*raw_values, trip_id))
+    updated_trip = cur.fetchone()
+    
+    return updated_trip
     
 
 @router.delete('/{trip_id}')

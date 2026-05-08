@@ -1,7 +1,10 @@
 def convert_to_map(data: dict):
+    print('convert', type(data))
     mapped_object: dict = {}
     
-    for key in data:
+    print('iofhdsahiof', data)
+    
+    for key in data.keys():
         return_key = ''
         for char in key:
             if char.isupper():
@@ -13,8 +16,9 @@ def convert_to_map(data: dict):
 
 
 def serialize(data: dict):
+    print('serialized data', data)
     map = convert_to_map(data)
-    return_columns = []
+    set_cols = []
     raw_values = []
     
         
@@ -22,12 +26,12 @@ def serialize(data: dict):
     for key, value in data.items():
         if key != 'id':
             col_name = map[key]
-            return_columns.append(f"{col_name} = %s")
+            set_cols.append(f"{col_name} = %s")
             raw_values.append(value)
     
     
     return {
-        "set_cols": ", ".join(return_columns),
+        "set_cols": ", ".join(set_cols),
         "raw_values": raw_values
     }
 # 	
