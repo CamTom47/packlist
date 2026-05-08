@@ -99,20 +99,40 @@ def edit_a_trip(trip_id, data: Trip):
 @router.delete('/{trip_id}')
 def delete_trip(trip_id):
     """Delete trip"""
-    return
+    cur.execute("""
+                DELETE FROM trips WHERE id = %s
+                """, trip_id)
+    
+    
+    return {"message": "Trip was successfully deleted"}
 
 @router.post('/{trip_id}/addpack')
-def add_pack_to_trip(trip_id):
+def add_pack_to_trip(trip_id, data):
     """Add a pack to a trip"""
-
     
-    # get pack id from request
-    return
+    pack_id = data.packId
+    
+    query = """
+            INSERT INTO trips_packs (trip_id, pack_id)
+            VALUES (%s, %s) """
+            
+    cur.execute(query, (trip_id, pack_id))
+    
+    return {"message": f"Pack {pack_id} was successfully added to Trip {trip_id}"}
 
 @router.delete('/{trip_id}')
-def remove_pack_from_trip(trip_id,pack_id):
+def remove_pack_from_trip(trip_id, data):
     """Remove a pack from a trip"""
-    return
+    
+    pack_id = data.packId
+    
+    query = """
+            DELETE FROM trips_packs WHERE pack_id = %s
+            """
+            
+    cur.execute(query, data.pack_id)    
+    
+    return {'message': f"Pack {pack_id} was successfully removed from Trip {trip_id}"}
 
 # @router('/trips/<int:trip_id>/<int:pack_id>/check')
 # def evaluate_pack_for_trip(trip_id, pack_id):
